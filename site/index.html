@@ -1,0 +1,1840 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NODE Semiconductor</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="NODE designs energy-sector chips in Indonesia and fabricates them with foundry partners in Japan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: full-bleed cinematic scenes on a deep-ink ground, one accent per screen, copy set in a narrow column. */
+:root {
+  color-scheme: dark;
+  --ink: #0A1628;        /* deck base navy */
+  --ink-2: #0E1D36;
+  --slate: #3A537B;      /* deck slate */
+  --mist: #C7D0D9;       /* deck mist */
+  --paper: #F0F4F7;      /* deck paper */
+  --electric: #2B3BFF;   /* deck #0018FB, lifted for contrast on ink */
+  --electric-deep: #1800AD;
+  --signal: #F5E734;     /* deck highlight yellow */
+  --line: rgba(199, 208, 217, .14);
+  --muted: #9AA8BA;
+
+  --f-display: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Noto Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  --wrap: 1240px;
+  --ease: cubic-bezier(.16, 1, .3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scrollbar-gutter: stable; }
+html.ready { scroll-behavior: smooth; }   /* after load, so deep links land instantly */
+.skip-link { position: absolute; left: 16px; top: -60px; z-index: 200; background: var(--paper); color: var(--ink); padding: 10px 14px; border-radius: 8px; font: 500 14px var(--f-display); text-decoration: none; }
+[tabindex="-1"]:focus { outline: none; }
+.skip-link:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+.paused .shot img { animation-play-state: paused; }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font: 400 17px/1.6 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; border-radius: 4px; }
+::selection { background: var(--signal); color: var(--ink); }
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--wrap) + 64px);
+  margin-inline: auto;
+  padding-left: max(var(--gutter-l), 4vw);
+  padding-right: max(var(--gutter-r), 4vw);
+}
+
+/* ---------- type ---------- */
+.eyebrow {
+  font: 500 12px/1 var(--f-mono);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--mist);
+  display: inline-flex; align-items: center; gap: 10px;
+}
+/* annotation-style label: a hairline leader, like a callout on a drawing */
+.eyebrow::before { content: ""; width: 32px; height: 1px; background: currentColor; opacity: .55; }
+h1, h2, h3 { font-family: var(--f-display); margin: 0; text-wrap: balance; }
+h1 {
+  font-weight: 600;
+  font-size: clamp(2.35rem, 5.4vw, 5.25rem);
+  line-height: 1.02;
+  letter-spacing: -.045em;
+}
+h2 {
+  font-weight: 600;
+  font-size: clamp(2rem, 4.4vw, 4rem);
+  line-height: 1.04;
+  letter-spacing: -.04em;
+}
+h3 { font-weight: 600; font-size: 1.25rem; letter-spacing: -.02em; line-height: 1.2; }
+.lede { font-size: clamp(1.02rem, 1.3vw, 1.2rem); color: var(--mist); max-width: 46ch; margin: 0; }
+.note { font: 400 14px/1.55 var(--f-body); color: var(--muted); margin: 0; }
+mark {
+  color: inherit; background: none; position: relative; white-space: nowrap;
+  background-image: linear-gradient(var(--signal), var(--signal));
+  background-repeat: no-repeat; background-position: 0 92%; background-size: var(--mk, 100%) .14em;
+  padding-bottom: .02em;
+}
+.num { font-family: var(--f-display); font-weight: 600; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+
+/* split-word mask for headline reveals */
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
+.w > span { display: inline-block; will-change: transform; }
+
+/* ---------- graded photography ---------- */
+.shot { position: absolute; inset: 0; overflow: hidden; background: var(--ink); isolation: isolate; }
+.shot img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(1) contrast(1.16) brightness(.98);
+  animation: kenburns 28s ease-in-out infinite alternate;
+  transform-origin: var(--origin, 60% 40%);
+}
+.shot::after { /* duotone: ink shadows -> electric highlights */
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(160deg, #9DB0D6 0%, #4A6290 40%, #16274A 100%);
+  mix-blend-mode: multiply;
+}
+.shot.flip { transform: scaleX(-1) scale(var(--z, 1)); }
+/* one scene keeps some of its real colour so Indonesia reads as a place */
+.shot.natural img { filter: grayscale(.35) contrast(1.12) brightness(1.05) saturate(.9); }
+.shot.natural::after { background: linear-gradient(160deg, #C9D6EE 0%, #6F86B4 55%, #1B2C4C 100%); }
+.shot::before { /* vignette + scrim */
+  content: ""; position: absolute; inset: 0; z-index: 2;
+  background: var(--scrim, radial-gradient(120% 90% at 70% 40%, transparent 30%, rgba(10,22,40,.85) 100%));
+}
+.shot.warm img { filter: grayscale(.15) contrast(1.08) brightness(.85) saturate(1.1); }
+.shot.warm::after { background: linear-gradient(160deg, rgba(245,231,52,.0) 0%, rgba(10,22,40,.5) 100%); mix-blend-mode: normal; }
+@keyframes kenburns { from { transform: scale(1.02) translate3d(0,0,0); } to { transform: scale(1.12) translate3d(-1.5%, -1%, 0); } }
+
+/* film grain over everything */
+.grain { pointer-events: none; position: fixed; inset: 0; z-index: 90; overflow: hidden; }
+.grain::before {
+  content: ""; position: absolute; inset: -50%; opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0,0) } 20% { transform: translate(-3%,2%) } 40% { transform: translate(2%,-3%) }
+  60% { transform: translate(-2%,-1%) } 80% { transform: translate(3%,3%) } 100% { transform: translate(0,0) }
+}
+
+/* ---------- logo ---------- */
+.logo { display: inline-flex; align-items: center; font: 700 22px/1 var(--f-display); letter-spacing: .02em; color: var(--paper); text-decoration: none; gap: .02em; }
+.logo svg { width: .86em; height: .86em; overflow: visible; margin-inline: .04em; }
+.logo .ring { fill: none; stroke: currentColor; stroke-width: 6; }
+.logo .trace { fill: none; stroke: var(--electric); stroke-width: 2.2; stroke-linecap: round; }
+.logo .pad { fill: var(--electric); }
+.logo .core { fill: var(--electric); transition: transform .25s var(--ease); }
+
+/* ---------- nav ---------- */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--ink); }
+.nav {
+  position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 50;
+  padding-block: 18px;
+  transition: background .4s, backdrop-filter .4s, padding .4s;
+}
+.nav.solid { background: rgba(10,22,40,.72); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2); padding-block: 12px; border-bottom: 1px solid var(--line); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.lang button {
+  appearance: none; border: 0; background: none; color: var(--muted); cursor: pointer;
+  font: 500 12.5px/1 var(--f-mono); letter-spacing: .1em; padding: 11px 13px; border-radius: 999px; min-width: 44px;
+  transition: color .2s, background .2s;
+}
+.lang button[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
+
+.btn {
+  --mx: 0px; --my: 0px;
+  display: inline-flex; align-items: center; gap: 10px;
+  font: 500 15px/1 var(--f-display); letter-spacing: -.01em; text-decoration: none;
+  padding: 15px 22px; border-radius: 999px; border: 1px solid transparent; cursor: pointer;
+  background: var(--paper); color: var(--ink);
+  transform: translate(var(--mx), var(--my));
+  transition: transform .35s var(--ease), background .25s, color .25s, box-shadow .35s;
+}
+.btn:hover { box-shadow: 0 10px 30px -12px rgba(0,0,0,.6); }
+.btn .arr { transition: transform .35s var(--ease); }
+.btn:hover .arr { transform: translateX(4px); }
+.btn.ghost { background: transparent; color: var(--paper); border-color: rgba(240,244,247,.28); }
+.btn.ghost:hover { border-color: var(--paper); box-shadow: none; }
+.btn.sm { padding: 10px 16px; font-size: 13px; }
+.btn.signal { background: var(--signal); color: var(--ink); }
+.btn.signal:hover { box-shadow: 0 10px 30px -12px rgba(0,0,0,.6); }
+
+/* ---------- cold open ---------- */
+.intro {
+  position: fixed; inset: 0; z-index: 100; background: var(--ink);
+  display: grid; place-items: center; cursor: pointer;
+}
+.intro .bar { position: absolute; left: 0; right: 0; height: 12vh; background: #000; }
+.intro .bar.t { top: 0; } .intro .bar.b { bottom: 0; }
+.intro svg { width: min(78vw, 560px); height: auto; overflow: visible; }
+.intro .it { fill: none; stroke: var(--electric); stroke-width: 1.4; stroke-linecap: round; }
+.intro .ip { fill: var(--electric); }
+.intro .word { font: 700 120px/1 var(--f-display); letter-spacing: .02em; fill: var(--paper); }
+.intro .iring { fill: none; stroke: var(--paper); stroke-width: 15; }
+.intro .icore { fill: var(--electric); }
+.intro .tag { font: 500 13px var(--f-mono); letter-spacing: .3em; fill: var(--mist); }
+.intro .skip { position: absolute; bottom: calc(12vh + 18px); right: max(24px, var(--gutter-r)); font: 500 11px var(--f-mono); letter-spacing: .2em; color: var(--muted); text-transform: uppercase; }
+html.no-intro .intro { display: none; }
+
+/* ---------- scenes ---------- */
+section { position: relative; overflow: hidden; }
+[id] { scroll-margin-top: 84px; }
+html, body { overflow-x: clip; }
+.scene { padding-block: clamp(96px, 14vw, 180px); overflow: hidden; }
+.scene-head { display: grid; gap: 22px; max-width: 900px; position: relative; z-index: 3; }
+
+/* hero */
+.hero { min-height: 100svh; display: flex; align-items: flex-end; padding-block: 140px 56px; overflow: hidden; }
+/* .flip mirrors the photo, so the scrim runs right-to-left in its own coordinates */
+.hero .shot { --scrim: linear-gradient(270deg, rgba(10,22,40,.94) 0%, rgba(10,22,40,.62) 42%, rgba(10,22,40,.12) 78%, rgba(10,22,40,.05) 100%), linear-gradient(0deg, var(--ink) 0%, transparent 40%); --origin: 30% 50%; }
+/* widen and shift the frame so the walking engineer lands in the right third (container is mirrored) */
+.hero .shot img { width: 128%; max-width: none; margin-left: -28%; }
+@media (max-width: 760px) { .hero .shot img { width: 100%; margin-left: 0; object-position: 40% 50%; } }
+#traces { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+.hero .wrap { position: relative; z-index: 3; display: grid; gap: 28px; }
+.hero h1 { max-width: 15ch; }
+.hero .lede { max-width: 44ch; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.hero-meta {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; margin-top: 36px;
+  padding-top: 18px; border-top: 1px solid var(--line);
+  font: 400 12px/1.4 var(--f-mono); letter-spacing: .12em; color: var(--muted); text-transform: uppercase;
+}
+.hero-meta b { color: var(--paper); font-weight: 500; }
+.cue { display: inline-flex; align-items: center; gap: 10px; }
+.cue i { width: 1px; height: 28px; background: linear-gradient(var(--paper), transparent); display: block; animation: cue 2.2s var(--ease) infinite; transform-origin: top; }
+@keyframes cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
+
+/* gap */
+.gap .shot { left: 38%; --scrim: linear-gradient(90deg, var(--ink) 0%, rgba(10,22,40,.7) 30%, rgba(10,22,40,.35) 100%), linear-gradient(0deg, var(--ink), transparent 40%), linear-gradient(180deg, var(--ink), transparent 30%); }
+.gap-grid { display: grid; grid-template-columns: minmax(0, 860px); gap: clamp(32px, 6vw, 96px); align-items: end; margin-top: clamp(40px, 6vw, 80px); position: relative; z-index: 3; }
+.big { font-size: clamp(4.5rem, 13vw, 11rem); line-height: .9; color: var(--paper); }
+.big small { font-size: .32em; letter-spacing: -.02em; color: var(--mist); margin-left: .1em; }
+.big-cap { margin-top: 14px; color: var(--mist); max-width: 30ch; }
+.chart { width: 100%; height: auto; overflow: visible; }
+.chart .axis { stroke: var(--line); stroke-width: 1; }
+.chart .ln { fill: none; stroke: var(--paper); stroke-width: 2.4; stroke-linecap: round; }
+.chart .ln.proj { stroke: var(--signal); stroke-dasharray: 2 8; }
+.chart .area { fill: url(#gArea); }
+.chart .dot { fill: var(--ink); stroke: var(--paper); stroke-width: 2; }
+.chart .dot.hot { stroke: var(--signal); fill: var(--signal); }
+.chart text { font: 500 13px var(--f-mono); fill: var(--mist); letter-spacing: .04em; }
+.chart text.v { fill: var(--paper); font: 600 18px var(--f-display); letter-spacing: -.02em; }
+.chart text.v.hot { fill: var(--signal); }
+
+/* wave */
+.wave { min-height: 92svh; display: flex; align-items: center; }
+.wave .shot { --scrim: linear-gradient(0deg, var(--ink) 0%, rgba(10,22,40,.1) 45%, rgba(10,22,40,.5) 85%, var(--ink) 100%); --origin: 50% 60%; }
+.wave .shot img { filter: grayscale(1) contrast(1.25) brightness(1.15); }
+.wave .wrap { position: relative; z-index: 3; }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: clamp(48px, 7vw, 88px); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.tile {
+  position: relative; padding: 28px 24px 30px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  background: rgba(10,22,40,.62);
+  min-width: 0;
+}
+.tile::before { content: ""; position: absolute; left: -1px; right: -1px; top: -1px; height: 2px; background: var(--paper); transform: scaleX(var(--lit, 1)); transform-origin: left; transition: transform .6s var(--ease); }
+.tile .num { font-size: clamp(2.4rem, 4.6vw, 3.9rem); line-height: 1; display: block; }
+.tile p { margin: 10px 0 0; color: var(--mist); font-size: 15px; line-height: 1.45; }
+.wave .note { margin-top: 18px; }
+
+/* choice */
+/* the one light scene: breaks the dark rhythm at the page's punchline */
+.choice { background: var(--paper); color: var(--ink); }
+.choice .eyebrow { color: var(--slate); }
+.choice .wrap { position: relative; z-index: 3; }
+.choice mark { background-image: linear-gradient(var(--signal), var(--signal)); background-size: var(--mk, 100%) .42em; background-position: 0 88%; }
+.choice .bar-label h3 { color: var(--slate); }
+.choice .track { background: rgba(10,22,40,.07); }
+.choice .fill.fab { background: linear-gradient(90deg, #8C9BB3 0%, #8C9BB3 50%, rgba(140,155,179,.45) 50%, rgba(140,155,179,.45) 100%); }
+.choice .fill.fabless { background: var(--ink); outline: 3px solid var(--signal); outline-offset: 2px; }
+.choice .closing p:first-child { color: var(--ink); }
+.choice .note { color: #5A6A82; }
+.choice-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; }
+.ratio { text-align: left; }
+.ratio .num { display: block; font-size: clamp(3.4rem, 9vw, 8.5rem); line-height: .9; letter-spacing: -.055em; }
+.ratio span:last-child { font: 500 15px var(--f-body); color: var(--slate); }
+.wafer-disc { position: absolute; right: -12vw; top: -14vw; width: 46vw; max-width: 720px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; opacity: .16; pointer-events: none; z-index: 1; }
+.wafer-disc { opacity: 1 !important; border-radius: 0 !important; overflow: visible !important; }
+.wafer-disc canvas { width: 100%; height: 100%; display: block; }
+@media (max-width: 760px) { .wafer-disc { opacity: .45 !important; width: 70vw !important; right: -24vw !important; top: -18vw !important; } }
+
+/* ticker */
+.ticker { padding-block: 26px; border-block: 1px solid var(--line); background: var(--ink); display: grid; gap: 14px; }
+.mq { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.mq-track { display: flex; width: max-content; animation: mq 46s linear infinite; }
+.mq.rev .mq-track { animation-direction: reverse; animation-duration: 58s; }
+.mq:hover .mq-track { animation-play-state: paused; }
+.mq-item { display: inline-flex; align-items: center; gap: clamp(22px, 3vw, 44px); padding-right: clamp(22px, 3vw, 44px); white-space: nowrap; font: 600 clamp(1.35rem, 2.6vw, 2.3rem)/1.1 var(--f-display); letter-spacing: -.035em; color: var(--paper); }
+.dimrow .mq-item { font-size: clamp(1rem, 1.6vw, 1.35rem); font-weight: 500; color: var(--muted); letter-spacing: -.01em; }
+.mq-item svg { width: .62em; height: .62em; flex: none; overflow: visible; }
+.mq-item svg circle.r { fill: none; stroke: currentColor; stroke-width: 6; opacity: .6; }
+.mq-item svg circle.c { fill: var(--electric); }
+@keyframes mq { to { transform: translateX(-50%); } }
+
+/* live import meter */
+.meter { margin-top: clamp(56px, 8vw, 104px); padding-top: 28px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; position: relative; z-index: 3; }
+.meter-k { margin: 0; font-size: clamp(1.05rem, 1.6vw, 1.35rem); color: var(--mist); }
+.meter-v { font-size: clamp(2.4rem, 5.4vw, 4.6rem); line-height: 1; color: var(--signal); min-width: 7ch; }
+.meter-note { flex-basis: 100%; margin-top: 6px; }
+
+/* manifesto mega marquee */
+.mega { position: absolute; left: 0; right: 0; bottom: clamp(16px, 4vw, 48px); z-index: 2; overflow: hidden; pointer-events: none; }
+.mega-track { display: flex; width: max-content; animation: mq 70s linear infinite; }
+.mega span { font: 700 clamp(4.5rem, 13vw, 12rem)/1 var(--f-display); letter-spacing: -.05em; white-space: nowrap; padding-right: .5em; color: transparent; -webkit-text-stroke: 1px rgba(199,208,217,.22); }
+.manifesto .wrap { padding-bottom: clamp(120px, 16vw, 220px); }
+
+/* 2030 targets told as one sentence, numbers carry the weight */
+.wave-line { margin: clamp(40px, 6vw, 72px) 0 0; max-width: 30ch; font: 500 clamp(1.5rem, 3vw, 2.6rem)/1.3 var(--f-display); letter-spacing: -.025em; color: var(--mist); text-wrap: pretty; position: relative; z-index: 3; }
+html[lang="id"] .wave-line { max-width: 32ch; font-size: clamp(1.4rem, 2.8vw, 2.4rem); }
+.wn { color: var(--paper); font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.wave .note { margin-top: 24px; }
+/* the one centred scene: a held breath over the Cirata reservoir */
+.wave .wrap { text-align: center; }
+.wave .scene-head { margin-inline: auto; justify-items: center; }
+.wave-line { margin-inline: auto; }
+.wave .shot { --scrim: radial-gradient(70% 70% at 50% 50%, rgba(10,22,40,.55), rgba(10,22,40,.15) 70%), linear-gradient(0deg, var(--ink) 0%, transparent 30%), linear-gradient(180deg, var(--ink) 0%, transparent 25%); }
+
+/* ---------- depth ---------- */
+/* full-bleed scene backgrounds get headroom for parallax */
+main > section > .shot { inset: -90px 0; transform: translate3d(0, var(--py, 0px), 0); will-change: transform; }
+main > section > .shot.flip { transform: translate3d(0, var(--py, 0px), 0) scaleX(-1) scale(var(--z, 1)); }
+.gap > .shot { left: 38%; }
+@media (max-width: 980px) { .gap > .shot { left: 0; } }
+.leg-photo .shot { inset: -50px 0; transform: translate3d(0, var(--py, 0px), 0); }
+/* photo cards: lifted off the page */
+.leg-photo, .vimg, .event-img, .road-photo { box-shadow: 0 50px 90px -45px rgba(0,0,0,.85), 0 18px 36px -24px rgba(0,0,0,.6); }
+.leg, .visits, .ask-grid, .road-grid { perspective: 1600px; }
+
+/* the chip has thickness and floats */
+.net { perspective: 1200px; }
+.chip { transform-style: preserve-3d; animation: chipfloat 9s ease-in-out infinite alternate;
+  box-shadow: 0 1px 0 #1b2c50, 0 2px 0 #18284a, 0 3px 0 #162444, 0 4px 0 #14213f, 0 5px 0 #121d39, 0 6px 0 #101a33,
+              0 40px 70px -20px rgba(0,0,0,.85), 0 0 120px -30px rgba(43,59,255,.35); }
+.chip::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: -46px; height: 22px; border-radius: 50%; background: rgba(0,0,0,.55); filter: blur(14px); transform: translateZ(-40px); animation: chipshadow 9s ease-in-out infinite alternate; }
+.chip > div { transform: translateZ(26px); }
+@keyframes chipfloat { 0% { transform: rotateX(16deg) rotateY(-10deg) translateY(0); } 100% { transform: rotateX(10deg) rotateY(10deg) translateY(-12px); } }
+@keyframes chipshadow { 0% { opacity: .9; transform: translateZ(-40px) scaleX(1); } 100% { opacity: .55; transform: translateZ(-40px) scaleX(.85); } }
+@media (prefers-reduced-motion: reduce) {
+  main > section > .shot, .leg-photo .shot { transform: none; }
+}
+/* the chip as a flat package drawing, the way a datasheet shows it: hairline outline,
+   fine pins, pin-1 marker, the real die in the cavity. No float, no glow, no fake thickness. */
+.chip { animation: none !important; transform: none !important; box-shadow: none !important;
+  background: rgba(10,22,40,.82) !important; border: 1px solid rgba(199,208,217,.42) !important; border-radius: 3px !important;
+  aspect-ratio: 1; padding: 0 !important; overflow: visible; }
+.chip::before { inset: -7px !important;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 13px, rgba(199,208,217,.55) 13px 15px) top / 80% 6px no-repeat,
+    repeating-linear-gradient(90deg, transparent 0 13px, rgba(199,208,217,.55) 13px 15px) bottom / 80% 6px no-repeat,
+    repeating-linear-gradient(0deg, transparent 0 13px, rgba(199,208,217,.55) 13px 15px) left / 6px 80% no-repeat,
+    repeating-linear-gradient(0deg, transparent 0 13px, rgba(199,208,217,.55) 13px 15px) right / 6px 80% no-repeat !important; }
+.chip::after { content: "" !important; position: absolute; left: 12px !important; top: 12px !important; right: auto !important; bottom: auto !important;
+  width: 8px !important; height: 8px !important; border-radius: 50% !important; border: 1px solid rgba(199,208,217,.6);
+  background: none !important; filter: none !important; animation: none !important; transform: none !important; opacity: 1 !important; }
+.chip .die { position: absolute; inset: 17%; border: 1px solid rgba(199,208,217,.28);
+  background: url("assets/die-b.jpg") center / cover; filter: grayscale(1) contrast(1.15) brightness(.42); }
+.chip > div { position: relative; z-index: 1; transform: none !important; }
+.chip .logo { font-size: 26px; }
+/* wafer node */
+.wnode { position: relative; z-index: 1; width: 100%; max-width: 340px; aspect-ratio: 1; justify-self: center; }
+.wnode canvas { width: 100%; height: 100%; display: block; }
+/* the wordmark sits in the die's logo window, like metal artwork on a real chip */
+.wnode-label { position: absolute; left: 15%; top: 45.2%; width: 41%; height: 11.6%; display: grid; place-items: center; text-align: center; pointer-events: none; }
+.wnode-label .logo { font-size: clamp(15px, 5.6cqw, 21px); color: rgba(240,244,247,.9); }
+.wnode { container-type: inline-size; }
+.wnode-label span { display: none; }
+.net.pinout { grid-template-columns: minmax(240px, 340px) minmax(0, 1fr); }
+@media (max-width: 980px) { .net .wnode { order: -1; width: min(280px, 72vw); margin-bottom: 20px; } }
+.chip span[data-i18n] { margin-top: 8px; font-size: 10.5px; letter-spacing: .14em; color: var(--mist); }
+
+/* data packet running along the Jakarta–Kyushu hop lines */
+.hop-line { position: relative; }
+.hop-line::after { content: ""; position: absolute; left: -2px; width: 5px; height: 16px; border-radius: 3px; background: var(--signal); animation: packet 2.4s cubic-bezier(.6, 0, .4, 1) infinite; }
+@keyframes packet { 0% { top: 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { top: calc(100% - 16px); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mq-track, .mega-track { animation: none !important; }
+  .hop-line::after { display: none; }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.bars { margin-top: clamp(56px, 8vw, 104px); display: grid; gap: 34px; max-width: 1100px; }
+.bar-row { display: grid; gap: 12px; }
+.bar-label { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.bar-label h3 { font-weight: 500; font-size: 1.05rem; color: var(--mist); }
+.bar-label .num { font-size: clamp(1.6rem, 3vw, 2.6rem); }
+.track { height: 14px; border-radius: 99px; background: rgba(199,208,217,.08); position: relative; overflow: visible; }
+.fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99px; transform-origin: left; }
+.fill.fab { width: 100%; background: linear-gradient(90deg, var(--slate) 0%, var(--slate) 50%, rgba(58,83,123,.55) 50%, rgba(58,83,123,.55) 100%); }
+.fill.fabless { width: max(4px, .25%); background: var(--signal); }
+.choice .closing { margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: baseline; max-width: 1100px; }
+.choice .closing p:first-child { font-size: clamp(1.05rem, 1.5vw, 1.3rem); color: var(--paper); max-width: 40ch; margin: 0; }
+
+/* how */
+.how .route { margin-top: clamp(48px, 7vw, 88px); position: relative; }
+.route svg { width: 100%; height: 90px; display: block; overflow: visible; }
+.route .rp { fill: none; stroke: rgba(199,208,217,.35); stroke-width: 1.2; stroke-dasharray: 3 7; vector-effect: non-scaling-stroke; }
+.route .rp-live { fill: none; stroke: var(--electric); stroke-width: 1.8; vector-effect: non-scaling-stroke; }
+@media (max-width: 760px) { .how .route { display: none; } }
+.route .rdot { fill: var(--paper); }
+.route .rnode { fill: var(--ink); stroke: var(--paper); stroke-width: 1.6; }
+.panels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 18px; perspective: 1200px; }
+.panel {
+  position: relative; min-height: 460px; border-radius: 8px; overflow: hidden; isolation: isolate;
+  border: 1px solid var(--line); display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 28px; transform-style: preserve-3d; transition: transform .6s var(--ease), border-color .4s;
+  min-width: 0;
+}
+.panel:hover { border-color: rgba(240,244,247,.35); }
+.panel .shot { --scrim: linear-gradient(0deg, rgba(10,22,40,.96) 0%, rgba(10,22,40,.45) 55%, rgba(10,22,40,.15) 100%); z-index: -1; }
+.panel .step { font: 500 12px var(--f-mono); letter-spacing: .16em; color: var(--mist); text-transform: uppercase; display: flex; justify-content: space-between; margin-bottom: auto; }
+.panel .step b { color: var(--signal); font-weight: 500; }
+.panel h3 { font-size: clamp(1.6rem, 2.4vw, 2.1rem); letter-spacing: -.035em; margin-top: 18px; }
+.panel p { margin: 10px 0 0; color: var(--mist); font-size: 15.5px; line-height: 1.5; max-width: 34ch; min-height: 4.5em; }
+
+/* where */
+.where .shot { --scrim: linear-gradient(180deg, var(--ink) 0%, rgba(10,22,40,.25) 30%, rgba(10,22,40,.55) 72%, var(--ink) 100%); --origin: 30% 60%; }
+.where .shot img { filter: grayscale(1) contrast(1.2) brightness(1.2); }
+.where .wrap { position: relative; z-index: 3; }
+.net { position: relative; margin-top: clamp(56px, 8vw, 96px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 250px) minmax(0, 1fr); gap: 28px clamp(56px, 8vw, 120px); align-items: center; }
+.net-col { display: grid; gap: 22px; }
+.net-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 0; }
+.net-svg path { fill: none; stroke: rgba(199,208,217,.3); stroke-width: 1.4; }
+.net-svg path.live { stroke: var(--paper); stroke-width: 1.4; stroke-dasharray: 2 10; animation: flow 1.8s linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -40; } }
+.chip {
+  position: relative; z-index: 1; aspect-ratio: 1; border-radius: 8px;
+  background: linear-gradient(145deg, #13254a, #0A1628); border: 1px solid rgba(240,244,247,.22);
+  display: grid; place-items: center; text-align: center; padding: 18px;
+  box-shadow: 0 30px 60px -30px rgba(0,0,0,.8);
+}
+.chip::before { /* package pins */
+  content: ""; position: absolute; inset: -9px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 14px, rgba(199,208,217,.45) 14px 18px) top / 70% 6px no-repeat,
+    repeating-linear-gradient(90deg, transparent 0 14px, rgba(199,208,217,.45) 14px 18px) bottom / 70% 6px no-repeat,
+    repeating-linear-gradient(0deg, transparent 0 14px, rgba(199,208,217,.45) 14px 18px) left / 6px 70% no-repeat,
+    repeating-linear-gradient(0deg, transparent 0 14px, rgba(199,208,217,.45) 14px 18px) right / 6px 70% no-repeat;
+  pointer-events: none;
+}
+.chip .logo { font-size: 30px; }
+.chip span { display: block; margin-top: 10px; font: 500 11px/1.4 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--mist); }
+.node {
+  position: relative; z-index: 1; padding: 18px 20px; border-radius: 6px; background: rgba(10,22,40,.8);
+  border: 1px solid var(--line);
+  transition: border-color .5s, box-shadow .5s;
+}
+.node.on { border-color: rgba(240,244,247,.38); }
+.node h3 { font-size: 1.05rem; }
+.node p { margin: 6px 0 0; font-size: 14.5px; line-height: 1.45; color: var(--mist); }
+/* pinout layout: chip left, a typeset pin table right */
+.net.pinout { grid-template-columns: minmax(200px, 270px) minmax(0, 1fr); gap: 0 clamp(96px, 12vw, 190px); max-width: 1120px; }
+.pins { list-style: none; margin: 0; padding: 0; display: grid; position: relative; z-index: 1; }
+.pins .node { display: grid; grid-template-columns: 40px minmax(0, 190px) minmax(0, 1fr); gap: 4px 20px; align-items: baseline;
+  padding: 18px 0; background: none; border: 0; border-top: 1px solid var(--line); border-radius: 0; }
+.pins .node:last-child { border-bottom: 1px solid var(--line); }
+.pins .node.on { border-color: var(--line); box-shadow: none; }
+.pin { font: 500 12px var(--f-mono); letter-spacing: .08em; color: var(--muted); transition: color .4s; }
+.node.on .pin { color: var(--signal); }
+.pins .node h3 { font-size: clamp(1.1rem, 1.5vw, 1.3rem); letter-spacing: -.02em; }
+.pins .node p { margin: 0; font-size: 15px; }
+@media (max-width: 980px) {
+  .net.pinout { grid-template-columns: minmax(0, 1fr); }
+  .pins .node { grid-template-columns: 36px minmax(0, 1fr); }
+  .pins .node p { grid-column: 2; }
+}
+/* annotated floorplan: one wide die on top, a column per IP block underneath, traces drop straight down */
+.net.pinout { grid-template-columns: minmax(0, 1fr) !important; gap: clamp(56px, 7vw, 88px) 0 !important; max-width: 1120px; align-items: start; }
+.net.pinout .wnode { max-width: none; width: 100%; aspect-ratio: 21 / 8; justify-self: stretch; order: 0; margin: 0; }
+.wnode-label { left: 31.5%; top: 12%; width: 20%; height: 40%; }
+.wnode-label .logo { font-size: clamp(16px, 3.2cqw, 34px); }
+/* columns share the die's grid: 4.5% side margins and a 1.4% gutter, so each column sits exactly under its block */
+.pins { grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: 1.4%; padding-inline: 4.5%; }
+.pins .node { display: block; padding: 16px 0 0; border-top: 1px solid var(--line); border-bottom: 0 !important; }
+.pins .node .pin { display: block; margin-bottom: 10px; }
+.pins .node h3 { font-size: clamp(1.05rem, 1.35vw, 1.25rem); }
+.pins .node p { margin-top: 8px; font-size: 14.5px; line-height: 1.5; color: var(--mist); }
+@media (max-width: 980px) {
+  .net.pinout .wnode { aspect-ratio: 16 / 9; }
+  .pins { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 18px; }
+  .pins .node p { grid-column: auto; }
+}
+
+/* roadmap */
+.road-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(32px, 6vw, 88px); align-items: center; }
+.road-photo { position: relative; aspect-ratio: 4 / 5; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); max-width: 100%; }
+.road-photo .shot { --scrim: linear-gradient(0deg, rgba(10,22,40,.6), transparent 50%); --origin: 20% 50%; }
+.road-photo .shot img { object-position: 18% 50%; filter: grayscale(1) contrast(1.15) brightness(1.15); }
+.steps { margin-top: 56px; position: relative; display: grid; gap: 0; }
+.steps::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 1px; background: var(--line); }
+.steps .prog { position: absolute; left: 5px; top: 8px; width: 1px; height: calc(100% - 16px); background: var(--paper); transform-origin: top; }
+.st { position: relative; padding: 0 0 30px 40px; display: grid; gap: 4px; }
+.st:last-child { padding-bottom: 0; }
+.st::before { content: ""; position: absolute; left: 1px; top: 8px; width: 9px; height: 9px; border-radius: 0; background: var(--ink); border: 1.5px solid var(--mist); }
+.st.on::before { background: var(--paper); border-color: var(--paper); }
+.st .m { font: 500 12px var(--f-mono); letter-spacing: .16em; color: var(--muted); text-transform: uppercase; }
+.st h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); letter-spacing: -.035em; }
+.st p { margin: 0; color: var(--mist); font-size: 15.5px; }
+
+/* manifesto */
+.manifesto { min-height: 100svh; display: flex; align-items: center; text-align: left; }
+.manifesto .shot { --scrim: linear-gradient(90deg, rgba(10,22,40,.9) 0%, rgba(10,22,40,.55) 45%, rgba(10,22,40,.15) 100%), linear-gradient(0deg, var(--ink), transparent 30%), linear-gradient(180deg, var(--ink), transparent 25%); --origin: 70% 50%; }
+.manifesto .shot img { filter: grayscale(1) contrast(1.35) brightness(1.4); }
+.manifesto .wrap { position: relative; z-index: 3; display: grid; gap: 32px; }
+.manifesto mark { background-size: var(--mk, 100%) .065em; background-position: 0 97%; }
+.manifesto h2 { font-size: clamp(3.2rem, 10.5vw, 10rem); line-height: .94; letter-spacing: -.055em; max-width: 9ch; padding-bottom: .14em; }
+.manifesto .lede { max-width: 42ch; color: var(--paper); }
+
+/* the ask */
+.ask { border-top: 1px solid var(--line); background: radial-gradient(70% 60% at 85% 0%, rgba(43,59,255,.16), transparent 70%), var(--ink); }
+.asks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: clamp(48px, 7vw, 88px); }
+.ask-card { position: relative; padding: 30px 28px 34px; border: 1px solid var(--line); border-radius: 8px; background: linear-gradient(180deg, rgba(240,244,247,.04), rgba(240,244,247,0)); overflow: hidden; min-width: 0; }
+.ask-card::after { content: ""; position: absolute; left: 0; top: 0; height: 2px; width: 100%; background: var(--paper); transform: scaleX(var(--bar, 1)); transform-origin: left; }
+.ask-card .m { font: 500 12.5px var(--f-mono); letter-spacing: .16em; color: var(--muted); }
+.ask-card h3 { font-size: clamp(1.7rem, 2.6vw, 2.3rem); letter-spacing: -.035em; margin-top: 40px; }
+.ask-card p { margin: 10px 0 0; color: var(--mist); font-size: 15.5px; }
+.founders { margin-top: 56px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: end; }
+.founders ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+.founders li { color: var(--mist); font-size: 15px; border-left: 1px solid var(--line); padding-left: 16px; }
+.founders li b { display: block; color: var(--paper); font: 600 1.05rem var(--f-display); letter-spacing: -.01em; }
+@media (max-width: 980px) { .asks, .founders { grid-template-columns: minmax(0, 1fr); } }
+
+/* two-tone headlines: the second line steps back, Apple-style */
+.dim { color: #7D8BA1; }
+.choice .dim { color: #8692A6; }
+.hot { color: var(--signal); }
+p, .lede { text-wrap: pretty; }
+.hero h1 { max-width: 17ch; font-size: clamp(2.3rem, 5vw, 4.9rem); }
+.scene-head .lede { margin-top: 4px; }
+
+/* Bahasa Indonesia runs ~20% longer: a step smaller, a little wider measure */
+html[lang="id"] h1 { font-size: clamp(2.15rem, 4.6vw, 4.5rem); max-width: 18ch; }
+html[lang="id"] h2 { font-size: clamp(1.85rem, 3.9vw, 3.6rem); }
+html[lang="id"] .scene-head { max-width: 980px; }
+html[lang="id"] .manifesto h2 { font-size: clamp(2.8rem, 9vw, 8.8rem); max-width: 11ch; }
+html[lang="id"] .leg-place { font-size: clamp(2.4rem, 5.4vw, 5rem); }
+
+/* how: editorial journey */
+.journey { margin-top: clamp(56px, 8vw, 104px); display: grid; }
+.leg { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 88px); align-items: center; }
+.leg-2 { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+.leg-2 .leg-photo { order: 2; }
+.leg-photo { position: relative; margin: 0; border-radius: 8px; overflow: hidden; aspect-ratio: 5 / 4; max-width: 100%; background: var(--ink-2); }
+.leg-2 .leg-photo { aspect-ratio: 4 / 5; max-height: 720px; justify-self: end; width: 100%; }
+.leg-3 { grid-template-columns: minmax(0, 1fr); position: relative; }
+.leg-3 .leg-photo { aspect-ratio: 21 / 9; }
+.leg-3 .shot { --scrim: linear-gradient(20deg, rgba(10,22,40,.92) 0%, rgba(10,22,40,.55) 40%, rgba(10,22,40,.05) 75%); }
+.leg-3 .leg-copy { position: absolute; left: clamp(22px, 4vw, 60px); bottom: clamp(22px, 4vw, 56px); max-width: 34ch; z-index: 2; }
+.leg-place { margin: 0; font: 600 clamp(2.6rem, 6vw, 5.6rem)/.95 var(--f-display); letter-spacing: -.05em; color: var(--paper); }
+.leg-place .coord { display: block; margin-top: 14px; font: 400 12px/1 var(--f-mono); letter-spacing: .12em; color: var(--muted); }
+.leg-copy h3 { font-size: clamp(1.35rem, 2.1vw, 1.8rem); letter-spacing: -.03em; margin-top: 26px; }
+.leg-copy > p:not(.leg-place) { margin: 10px 0 0; color: var(--mist); max-width: 36ch; }
+.hop { display: flex; align-items: center; justify-content: center; gap: 22px; padding-block: clamp(36px, 6vw, 72px); }
+.hop-line { width: 1px; height: clamp(70px, 9vw, 120px); background: linear-gradient(transparent, var(--mist) 25%, var(--mist) 75%, transparent); transform-origin: top; flex: none; }
+.hop p { margin: 0; color: var(--mist); font-size: 15.5px; max-width: 30ch; }
+.hop .num { display: block; font-size: clamp(2rem, 3.6vw, 3rem); color: var(--paper); line-height: 1; margin-bottom: 4px; }
+@media (max-width: 860px) {
+  .leg, .leg-2 { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .leg-2 .leg-photo { order: 0; aspect-ratio: 4 / 3; }
+  .leg-3 .leg-photo { aspect-ratio: 4 / 3; }
+  .leg-3 .leg-copy { position: static; max-width: none; }
+  .hop { justify-content: flex-start; }
+}
+/* tighter journey: one measure, equal photos, bigger copy, shorter hops */
+.journey { max-width: 1060px; }
+.leg, .leg-2, .leg-3 { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); }
+.leg-2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
+.leg-photo, .leg-2 .leg-photo, .leg-3 .leg-photo { aspect-ratio: 4 / 3; max-height: none; width: 100%; }
+.leg-3 .leg-copy { position: static; max-width: none; }
+.leg-3 .shot { --scrim: radial-gradient(120% 90% at 70% 40%, transparent 30%, rgba(10,22,40,.85) 100%); }
+.leg-place { font-size: clamp(2.2rem, 4.2vw, 3.8rem); }
+html[lang="id"] .leg-place { font-size: clamp(2.1rem, 4vw, 3.6rem); }
+.leg-place .coord { margin-top: 10px; }
+.leg-copy h3 { font-size: clamp(1.4rem, 2vw, 1.75rem); margin-top: 20px; }
+.leg-copy > p:not(.leg-place) { font-size: clamp(1.02rem, 1.3vw, 1.15rem); line-height: 1.55; max-width: 34ch; }
+.hop { padding-block: clamp(20px, 3.5vw, 40px); }
+.hop-line { height: clamp(56px, 6vw, 80px); }
+@media (max-width: 860px) {
+  .leg, .leg-2, .leg-3 { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .leg-2 .leg-photo { order: 0; }
+}
+
+/* traction */
+.traction { border-top: 1px solid var(--line); }
+/* three equal frames, one crop ratio, one caption pattern */
+.visits { margin-top: clamp(48px, 7vw, 88px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); }
+.visit { margin: 0; min-width: 0; }
+.vimg { border-radius: 8px; overflow: hidden; aspect-ratio: 4 / 5; background: var(--ink-2); }
+.vimg img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.8) contrast(1.05); }
+.v1 .vimg img { object-position: 42% 60%; }
+.v2 .vimg img { object-position: 50% 62%; }
+.v3 .vimg img { object-position: 38% 70%; }
+.visit figcaption { display: grid; gap: 4px; padding-top: 14px; font-size: 14.5px; color: var(--mist); }
+.visit figcaption b { color: var(--paper); font: 600 1.05rem var(--f-display); }
+@media (max-width: 860px) {
+  .visits { grid-template-columns: minmax(0, 1fr); }
+  .vimg { aspect-ratio: 4 / 3; }
+}
+
+/* Pertamuda */
+.ask-grid { margin-top: clamp(48px, 7vw, 88px); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+.fpics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.fpic { margin: 0; }
+.fpic img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: 50% 20%; border-radius: 8px; filter: saturate(.9); }
+.fpic figcaption { padding-top: 12px; font-size: 13.5px; line-height: 1.45; color: var(--mist); }
+.fpic figcaption b { display: block; color: var(--paper); font: 600 1rem var(--f-display); letter-spacing: -.01em; margin-bottom: 2px; }
+.ask-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.ask-list li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 8px; padding-block: 26px; border-top: 1px solid var(--line); }
+.ask-list li:last-child { border-bottom: 1px solid var(--line); }
+.ask-list .m { font: 500 12.5px var(--f-mono); letter-spacing: .12em; color: var(--muted); padding-top: 8px; }
+.ask-list h3 { font-size: clamp(1.5rem, 2.4vw, 2.1rem); letter-spacing: -.035em; }
+.ask-list p { margin: 8px 0 0; color: var(--mist); max-width: 46ch; }
+.ask .ask-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); }
+.event { margin: 0; }
+.event-img { border-radius: 8px; overflow: hidden; aspect-ratio: 3 / 2; background: var(--ink-2); }
+.event-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.85) contrast(1.05); }
+.event figcaption { padding-top: 12px; font-size: 13.5px; color: var(--muted); }
+@media (max-width: 980px) { .ask .ask-grid { grid-template-columns: minmax(0, 1fr); } }
+.proof { list-style: none; margin: 0; padding: 0; display: grid; }
+.proof li { display: grid; gap: 10px; padding-block: 26px; border-top: 1px solid var(--line); }
+.proof li:last-child { border-bottom: 1px solid var(--line); }
+.pnum { font: 600 clamp(2.6rem, 5vw, 4.4rem)/1 var(--f-display); letter-spacing: -.05em; color: var(--paper); min-width: 2.2ch; }
+.proof li:first-child .pnum { color: var(--signal); }
+.proof p { margin: 0; color: var(--mist); font-size: clamp(1rem, 1.3vw, 1.15rem); max-width: 30ch; }
+.why { margin-top: 36px; padding: 26px 28px; border-radius: 8px; background: rgba(240,244,247,.05); border: 1px solid var(--line); }
+.why h3 { font-size: 1.15rem; }
+.why p { margin: 8px 0 0; color: var(--mist); }
+@media (max-width: 980px) { .ask-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* where the chips go: six use cards, photo of the place, chip type, sector, one line */
+.uses { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 4vw, 48px) clamp(16px, 2vw, 28px); }
+.use { min-width: 0; }
+.use-img { position: relative; aspect-ratio: 4 / 3; border-radius: 8px; overflow: hidden; background: var(--ink-2); box-shadow: 0 40px 70px -40px rgba(0,0,0,.8); }
+.use-img .shot { inset: 0; }
+.use-img img[src*="use-distribution"] { object-position: 72% 75%; }
+.use-img img[src*="use-grid"] { object-position: 50% 40%; }
+.use-img img[src*="use-ev"] { object-position: 50% 55%; }
+.use-img .shot::before { --scrim: linear-gradient(0deg, rgba(10,22,40,.55), transparent 55%); }
+.use-chip { display: block; margin-top: 16px; font: 500 12px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); transition: color .5s; }
+.use.on .use-chip { color: var(--signal); }
+.use h3 { margin-top: 6px; font-size: clamp(1.2rem, 1.7vw, 1.45rem); letter-spacing: -.025em; }
+.use p { margin: 6px 0 0; font-size: 15px; line-height: 1.5; color: var(--mist); max-width: 32ch; }
+.where .net { display: block; max-width: none; }
+@media (max-width: 980px) { .uses { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .uses { grid-template-columns: minmax(0, 1fr); } }
+
+/* footer */
+footer { border-top: 1px solid var(--line); padding-block: 64px 0; overflow: hidden; }
+/* Discord-style sign-off: the wordmark fills the width and sinks past the bottom edge */
+.bigmark { display: flex; justify-content: center; align-items: center; gap: .015em; margin-top: clamp(48px, 7vw, 96px); margin-bottom: -.24em;
+  font: 700 clamp(7.5rem, 33vw, 34rem)/.8 var(--f-display); letter-spacing: -.03em; user-select: none; pointer-events: none; }
+.bigmark span { background: linear-gradient(180deg, #4A6290 0%, #22355C 45%, #0A1628 88%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.bigmark svg { width: .84em; height: .84em; flex: none; }
+.bigmark .bm-core { fill: var(--electric); opacity: .85; }
+.foot { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
+.foot h4 { margin: 0 0 14px; font: 500 11px var(--f-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.foot p, .foot li { margin: 0; color: var(--mist); font-size: 15px; }
+.foot ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.foot li b { display: block; color: var(--paper); font-weight: 500; }
+.credits { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); }
+.credits summary { cursor: pointer; font: 500 11px var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; }
+.credits summary::-webkit-details-marker { display: none; }
+.credits summary::after { content: " +"; }
+.credits[open] summary::after { content: " −"; }
+.credits ol { margin: 16px 0 0; padding-left: 18px; columns: 2; column-gap: 40px; font: 400 12px/1.6 var(--f-mono); color: var(--muted); }
+.credits ol a { color: var(--mist); }
+.legal { margin-top: 28px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font: 400 12px var(--f-mono); letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 980px) {
+  .gap-grid, .road-grid { grid-template-columns: minmax(0, 1fr); }
+  .gap .shot { left: 0; opacity: .55; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .panels { grid-template-columns: minmax(0, 1fr); }
+  .panel { min-height: 360px; }
+  .net { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .net .chip { order: -1; width: min(220px, 60vw); justify-self: center; margin-bottom: 16px; }
+  .net-svg { display: none; }
+  .road-photo { aspect-ratio: 16 / 10; order: -1; }
+  .foot { grid-template-columns: minmax(0, 1fr); }
+  .credits ol { columns: 1; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .nav .btn.sm { padding: 10px 12px; font-size: 12px; white-space: nowrap; }
+  .nav-right { gap: 8px; }
+  .lang button { padding: 10px 9px; min-width: 38px; }
+  .logo { font-size: 19px; }
+  .tiles { grid-template-columns: minmax(0, 1fr); }
+  .tile { padding: 22px 18px; }
+  .hero { padding-block: 120px 40px; }
+  .hero-meta { margin-top: 20px; }
+  .panel { min-height: 320px; padding: 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .grain { display: none; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#h-hero" data-i18n="skipLink">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- cold open -->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="bar t"></div><div class="bar b"></div>
+  <svg viewBox="0 0 600 280" role="img">
+    <g id="introTraces"></g>
+    <text id="iN" class="word" x="150" y="172">N</text>
+    <circle id="iRing" class="iring" cx="300" cy="130" r="36.5"/>
+    <circle id="iCore" class="icore" cx="300" cy="130" r="11"/>
+    <text id="iDE" class="word" x="350" y="172">DE</text>
+    <text id="introTag" class="tag" x="300" y="256" text-anchor="middle">FABLESS · INDONESIA</text>
+  </svg>
+  <span class="skip" data-i18n="skip">Click to skip</span>
+</div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="NODE home">N<svg viewBox="0 0 40 40" aria-hidden="true"><path class="trace" d="M34 20 H44 M6 20 H-4"/><circle class="ring" cx="20" cy="20" r="14.5"/><circle class="core" cx="20" cy="20" r="5"/></svg>DE</a>
+    <div class="nav-right">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" id="lang-en" data-lang="en" aria-pressed="true" aria-label="English" lang="en">EN</button>
+        <button type="button" id="lang-id" data-lang="id" aria-pressed="false" aria-label="Bahasa Indonesia" lang="id">ID</button>
+      </div>
+      <a class="btn sm magnet" href="#contact" data-i18n="navCta">Partner with us</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- 1 · hero -->
+  <section class="hero" aria-labelledby="h-hero">
+    <div class="shot flip"><img src="assets/fab-walk.jpg" alt="An engineer in a cleanroom suit walks between fabrication tools" fetchpriority="high"></div>
+    <canvas id="traces" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <h1 id="h-hero" tabindex="-1" data-i18n="heroTitle" data-split>Indonesia's chips come from abroad. <span class="dim">We're here to change that.</span></h1>
+      <p class="lede" data-i18n="heroLede" data-r>NODE designs energy-sector chips in Indonesia and fabricates them with foundry partners in Japan.</p>
+      <div class="hero-cta" data-r>
+        <a class="btn magnet" href="#how"><span data-i18n="heroCta">See how it works</span> <span class="arr" aria-hidden="true">→</span></a>
+        <a class="btn ghost magnet" href="#contact" data-i18n="heroCta2">Partner with NODE</a>
+      </div>
+      <div class="hero-meta" data-r>
+        <span><span data-i18n="metaDesign">Design — Jakarta</span></span>
+        <span><span data-i18n="metaFab">Fabrication — Kyushu</span></span>
+        <span class="cue"><i></i><span data-i18n="scroll">Scroll</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ticker: two rows running in opposite directions -->
+  <section class="ticker" id="ticker" aria-label="NODE at a glance">
+    <div class="mq" data-mq="mqA"><div class="mq-track"></div></div>
+    <div class="mq rev dimrow" data-mq="mqB"><div class="mq-track"></div></div>
+  </section>
+
+  <!-- 2 · the gap -->
+  <section class="scene gap" aria-labelledby="h-gap">
+    <div class="shot"><img src="assets/night-plant.jpg" alt="" loading="lazy"></div>
+    <div class="wrap">
+      <div class="scene-head">
+        <h2 id="h-gap" data-i18n="gapTitle" data-split>Every chip comes from abroad. Imports triple by 2030.</h2>
+      </div>
+      <div class="gap-grid">
+        <div data-r>
+          <svg class="chart" viewBox="0 0 600 260" role="img" aria-labelledby="chart-t">
+            <title id="chart-t">Indonesia semiconductor imports: 2.33 billion USD in 2020, 4.87 billion in 2025, projected 7.07 billion in 2030.</title>
+            <defs>
+              <linearGradient id="gArea" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#2B3BFF" stop-opacity=".35"/><stop offset="1" stop-color="#2B3BFF" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <line class="axis" x1="40" y1="210" x2="580" y2="210"/>
+            <path class="area" id="cArea" d="M40 158.7 L310 102.9 L560 54.5 L560 210 L40 210 Z"/>
+            <path class="ln" id="cLine" d="M40 158.7 L310 102.9"/>
+            <path class="ln proj" id="cProj" d="M310 102.9 L560 54.5"/>
+            <circle class="dot" cx="40" cy="158.7" r="5"/>
+            <circle class="dot" cx="310" cy="102.9" r="5"/>
+            <circle id="ripple" cx="560" cy="54.5" r="6" fill="none" stroke="#F5E734" stroke-width="1.5" opacity="0"/>
+            <circle class="dot hot" cx="560" cy="54.5" r="6"/>
+            <text class="v" x="40" y="140" data-i18n="c1">$2.33B</text>
+            <text class="v" x="310" y="84" text-anchor="middle" data-i18n="c2">$4.87B</text>
+            <text class="v hot" x="560" y="34" text-anchor="end" data-i18n="c3">$7.07B</text>
+            <text x="40" y="238">2020</text>
+            <text x="310" y="238" text-anchor="middle">2025</text>
+            <text x="560" y="238" text-anchor="end" data-i18n="proj">2030 · proj.</text>
+          </svg>
+          <p class="note" data-i18n="gapNote">~100% of advanced ICs are imported. The 2021–23 shortage showed how fragile that is.</p>
+        </div>
+      </div>
+      <div class="meter" data-r>
+        <p class="meter-k" data-i18n="meterK">Since you opened this page, Indonesia has imported</p>
+        <div class="meter-v num" id="meter" aria-live="off">$0</div>
+        <p class="meter-k" data-i18n="meterK2">worth of chips.</p>
+        <p class="note meter-note" data-i18n="meterNote">At 2025's pace of $4.87B a year.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · the wave -->
+  <section class="scene wave" aria-labelledby="h-wave">
+    <div class="shot natural"><img src="assets/cirata.jpg" alt="Aerial view of the Cirata floating solar plant on a reservoir in West Java" loading="lazy"></div>
+    <div class="wrap">
+      <div class="scene-head">
+        <h2 id="h-wave" data-i18n="waveTitle" data-split>2030 runs on silicon.</h2>
+      </div>
+      <p class="wave-line" data-r data-i18n="waveLine">By 2030, Indonesia plans to build <span class="wn" data-count="600" data-suffix="K">600K</span> electric cars a year, <span class="wn" data-count="9" data-suffix="M">9M</span> electric motorbikes, <span class="wn" data-count="10" data-suffix="M">10M</span> smart meters on PLN's grid, and <span class="wn" data-count="44" data-suffix="%">44%</span> of its power from renewables.</p>
+      <p class="note" data-i18n="waveNote">Government and PLN targets for 2030. Every one needs power ICs and sensors.</p>
+    </div>
+  </section>
+
+  <!-- 4 · the choice -->
+  <section class="scene choice" aria-labelledby="h-choice">
+    <div class="wafer-disc" aria-hidden="true"><canvas id="wafer"></canvas></div>
+    <div class="wrap">
+      <div class="choice-top">
+        <div class="scene-head">
+          <h2 id="h-choice" data-i18n="choiceTitle" data-split>We skip the fab. <span class="dim">We keep the design.</span></h2>
+        </div>
+        <div class="ratio" data-r><span class="num" id="ratio" data-i18n="ratio">200–1000×</span><span data-i18n="ratioCap">less capital to start</span></div>
+      </div>
+      <div class="bars">
+        <div class="bar-row" data-r>
+          <div class="bar-label"><h3 data-i18n="barFab">Build your own fab</h3><span class="num" data-i18n="barFabV">USD 10–20B</span></div>
+          <div class="track"><div class="fill fab" id="fillFab"></div></div>
+        </div>
+        <div class="bar-row" data-r>
+          <div class="bar-label"><h3 data-i18n="barFabless">Go fabless, like NODE</h3><span class="num" data-i18n="barFablessV">USD 20–50M</span></div>
+          <div class="track"><div class="fill fabless" id="fillFabless"></div></div>
+        </div>
+      </div>
+      <div class="closing" data-r>
+        <p data-i18n="choiceLine">Same silicon, a sliver of the capital. The talent and the IP stay in Indonesia.</p>
+        <p class="note" data-i18n="scaleNote">Bars drawn to scale.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · how: the chip's round trip, told as an editorial spread -->
+  <section class="scene how" id="how" aria-labelledby="h-how">
+    <div class="wrap">
+      <div class="scene-head">
+        <h2 id="h-how" data-i18n="howTitle" data-split>Designed in Indonesia. <span class="dim">Made in Kyushu.</span></h2>
+      </div>
+      <div class="journey">
+        <article class="leg leg-1" data-leg>
+          <figure class="leg-photo tilt"><div class="shot"><img src="assets/die-b.jpg" alt="Microscope photo of a chip die showing its layout" loading="lazy"></div></figure>
+          <div class="leg-copy">
+            <p class="leg-place"><span data-i18n="j1place">Indonesia</span></p>
+            <h3 data-i18n="j1t">It starts here.</h3>
+            <p data-i18n="j1">Our engineers write the logic and draw every layer of the chip. The design, and the IP, stay ours.</p>
+          </div>
+        </article>
+        <div class="hop" data-hop>
+          <span class="hop-line" aria-hidden="true"></span>
+          <p><span class="num" data-km="5105">5,105</span> <span data-i18n="hop1">km north. The design travels as a file.</span></p>
+        </div>
+        <article class="leg leg-2" data-leg>
+          <figure class="leg-photo tilt"><div class="shot warm"><img src="assets/litho.jpg" alt="An engineer working in a yellow-lit photolithography cleanroom" loading="lazy"></div></figure>
+          <div class="leg-copy">
+            <p class="leg-place"><span data-i18n="j2place">Kyushu</span><span class="coord">33°14′N 131°36′E</span></p>
+            <h3 data-i18n="j2t">Printed in Japan.</h3>
+            <p data-i18n="j2">Foundry partners in one of Japan's chip hubs turn our layout into silicon, then package and test every chip.</p>
+          </div>
+        </article>
+        <div class="hop" data-hop>
+          <span class="hop-line" aria-hidden="true"></span>
+          <p><span class="num" data-km="5105">5,105</span> <span data-i18n="hop2">km back. This time, as chips.</span></p>
+        </div>
+        <article class="leg leg-3" id="home-leg" data-leg>
+          <figure class="leg-photo tilt"><div class="shot"><img src="assets/jakarta.jpg" alt="South Jakarta at night seen from above" loading="lazy"></div></figure>
+          <div class="leg-copy">
+            <p class="leg-place"><span data-i18n="j3place">Indonesia</span></p>
+            <h3 data-i18n="j3t">Home, and straight to work.</h3>
+            <p data-i18n="j3">Chips go to Indonesian manufacturers. Or we license the design and earn on every unit.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · where -->
+  <section class="scene where" aria-labelledby="h-where">
+    <div class="shot"><img src="assets/geothermal.jpg" alt="A geothermal power plant venting steam under a starry sky in Central Java" loading="lazy"></div>
+    <div class="wrap">
+      <div class="scene-head">
+        <h2 id="h-where" data-i18n="whereTitle" data-split>Built for the energy that moves Indonesia.</h2>
+      </div>
+      <!-- where the chips go: one card per market, showing the place the chip actually works -->
+      <div class="net" id="net">
+        <ol class="uses" id="chip">
+          <li class="use" data-node><div class="use-img"><div class="shot"><img src="assets/use-upstream.jpg" alt="An offshore oil platform at sunset" loading="lazy"></div></div><span class="use-chip" data-i18n="u1">Sensor chips</span><h3 data-i18n="n1t">Upstream</h3><p data-i18n="n1">Sensors that catch wear on rigs and pipelines early.</p></li>
+          <li class="use" data-node><div class="use-img"><div class="shot"><img src="assets/night-plant.jpg" alt="An industrial plant lit up at night beside the water" loading="lazy"></div></div><span class="use-chip" data-i18n="u2">Edge-computing ICs</span><h3 data-i18n="n2t">Refining</h3><p data-i18n="n2">Chips that read temperature and pressure in real time.</p></li>
+          <li class="use" data-node><div class="use-img"><div class="shot"><img src="assets/use-distribution.jpg" alt="A Pertamina fuel tanker truck refuelling an aircraft" loading="lazy"></div></div><span class="use-chip" data-i18n="u3">Monitoring chips</span><h3 data-i18n="n3t">Distribution</h3><p data-i18n="n3">Fuel level and flow, tracked across tanks, trucks and ships.</p></li>
+          <li class="use" data-node><div class="use-img"><div class="shot"><img src="assets/use-retail.jpg" alt="Fuel dispensers at a Pertamina station" loading="lazy"></div></div><span class="use-chip" data-i18n="u4">Tank gauging chips</span><h3 data-i18n="n4t">Fuel stations</h3><p data-i18n="n4">Automatic tank gauging and early leak alerts.</p></li>
+          <li class="use" data-node><div class="use-img"><div class="shot"><img src="assets/use-ev.jpg" alt="An electric car plugged in at a charging station" loading="lazy"></div></div><span class="use-chip" data-i18n="u5">Power semiconductors</span><h3 data-i18n="n5t">EV charging</h3><p data-i18n="n5">Power chips for chargers and battery systems.</p></li>
+          <li class="use" data-node><div class="use-img"><div class="shot"><img src="assets/use-grid.jpg" alt="A digital single-phase PLN electricity meter on a wall" loading="lazy"></div></div><span class="use-chip" data-i18n="u6">Smart meter chips</span><h3 data-i18n="n6t">Grid &amp; renewables</h3><p data-i18n="n6">Smart meters, plus monitoring for geothermal and solar.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- traction: real photos from the founders' factory visits -->
+  <section class="scene traction" aria-labelledby="h-tr">
+    <div class="wrap">
+      <div class="scene-head">
+        <h2 id="h-tr" data-i18n="trTitle" data-split>We've already walked Japan's chip factories. <span class="dim">And we keep going back.</span></h2>
+        <p class="lede" data-r data-i18n="trLede">Field research on the factory floor, not from a desk. Three of the companies we've met:</p>
+      </div>
+      <div class="visits">
+        <figure class="visit v1" data-visit><div class="vimg tilt"><img src="assets/visit-renesas.jpg" alt="The NODE founders with the Renesas team at its office in Hiji, Japan" loading="lazy"></div><figcaption><b>Renesas</b><span data-i18n="v1">Hiji · IP and co-development</span></figcaption></figure>
+        <figure class="visit v2" data-visit><div class="vimg tilt"><img src="assets/visit-jsemi.jpg" alt="The NODE founders with the Japan Semiconductor team in Oita, Japan" loading="lazy"></div><figcaption><b>Japan Semiconductor</b><span data-i18n="v2">Oita · foundry</span></figcaption></figure>
+        <figure class="visit v3" data-visit><div class="vimg tilt"><img src="assets/visit-hiji.jpg" alt="The NODE founders in front of the Hiji High-Tech building in Japan" loading="lazy"></div><figcaption><b>Hiji High-Tech</b><span data-i18n="v3">Hiji · assembly and testing</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · roadmap -->
+  <section class="scene road" aria-labelledby="h-road">
+    <div class="wrap road-grid">
+      <div>
+        <div class="scene-head">
+          <h2 id="h-road" data-i18n="roadTitle" data-split>Thirty-six months to silicon in the field.</h2>
+        </div>
+        <div class="steps" id="steps">
+          <div class="prog" id="prog"></div>
+          <div class="st"><span class="m">M0–2</span><h3 data-i18n="s1t">Research</h3><p data-i18n="s1">Lock the chip spec with industry.</p></div>
+          <div class="st"><span class="m">M2–12</span><h3 data-i18n="s2t">Design</h3><p data-i18n="s2">Sign a foundry partner. Tape-out ready.</p></div>
+          <div class="st"><span class="m">M12–24</span><h3 data-i18n="s3t">Pilot</h3><p data-i18n="s3">First silicon, first energy-sector pilot.</p></div>
+          <div class="st"><span class="m">M24–36</span><h3 data-i18n="s4t">Scale</h3><p data-i18n="s4">Three product lines and a regional hub.</p></div>
+        </div>
+      </div>
+      <div class="road-photo" data-r>
+        <div class="shot"><img src="assets/fab-door.jpg" alt="A scientist in protective gear opens the door to a sterile lab" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · manifesto -->
+  <section class="manifesto" aria-labelledby="h-man">
+    <div class="shot"><img src="assets/die-a.jpg" alt="" loading="lazy"></div>
+    <div class="wrap">
+      <h2 id="h-man" data-i18n="manTitle" data-split>Design in <span class="hot">Indonesia.</span></h2>
+      <p class="lede" data-i18n="manLede" data-r>The value is in the design. We're claiming it for Indonesia. Energy first, then the region.</p>
+      <div class="hero-cta" data-r>
+        <a class="btn signal magnet" href="#contact"><span data-i18n="manCta">Build it with us</span> <span class="arr" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="mega" aria-hidden="true"><div class="mega-track"><span>Design in Indonesia</span><span>Rancang di Indonesia</span><span>Design in Indonesia</span><span>Rancang di Indonesia</span></div></div>
+  </section>
+
+  <!-- Pertamuda 2026: the win, and what it proves -->
+  <section class="scene ask" id="contact" aria-labelledby="h-ask">
+    <div class="wrap">
+      <div class="scene-head">
+        <h2 id="h-ask" data-i18n="askTitle" data-split>Top 3 at Pertamuda 2026. <span class="dim">And we're just getting started.</span></h2>
+        <p class="lede" data-r data-i18n="askLede">We pitched one idea: Indonesia should design its own chips.</p>
+      </div>
+      <div class="ask-grid">
+        <figure class="event" data-r>
+          <div class="event-img tilt"><img src="assets/pertamuda-2026.jpg" alt="Pertamuda Seed and Scale 2026 winners on stage at The Patra Bali" loading="lazy"></div>
+          <figcaption data-i18n="eventCap">Final and awarding night, The Patra Bali, 5 November 2026. Photo: Pertamina.</figcaption>
+        </figure>
+        <div class="ask-right">
+          <ul class="proof">
+            <li data-ask><span class="pnum">Top 3</span><p data-i18n="p1">Energy Founder · Energy Optimization, Pertamuda 2026</p></li>
+            <li data-ask><span class="pnum" data-i18n="p2n">4,445</span><p data-i18n="p2">applicants from 766 universities</p></li>
+            <li data-ask><span class="pnum">3</span><p data-i18n="p3">Japanese chipmakers met in person, from IP to final testing</p></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="logo" href="#top" style="font-size:34px">N<svg viewBox="0 0 40 40" aria-hidden="true"><path class="trace" d="M34 20 H44 M6 20 H-4"/><circle class="ring" cx="20" cy="20" r="14.5"/><circle class="core" cx="20" cy="20" r="5"/></svg>DE</a>
+        <p style="margin-top:16px;max-width:34ch" data-i18n="footAbout">A fabless semiconductor company closing Indonesia's energy-sector chip dependency.</p>
+      </div>
+    </div>
+    <details class="credits">
+      <summary data-i18n="credits">Photo credits</summary>
+      <ol>
+        <li>Cleanroom walk — Российский центр гибкой электроники, <a href="https://www.pexels.com/photo/a-worker-in-a-lab-5118462/" target="_blank" rel="noopener">Pexels</a></li>
+        <li>Industrial night — Charlie Min Kim, <a href="https://www.pexels.com/photo/illuminated-buildings-on-shore-15432979/" target="_blank" rel="noopener">Pexels</a></li>
+        <li>Cirata floating solar — indonesia.go.id, public domain, <a href="https://commons.wikimedia.org/wiki/File:PLTS_Cirata_Jelang_Uji_Coba.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li>
+        <li>Silicon wafer — Rob Bulmahn, CC BY 2.0, <a href="https://commons.wikimedia.org/wiki/File:5C2A5953R_-_49913961083_%E2%80%93_Silicon_Wafer_20200519.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li>
+        <li>Die shots OKI 10F5054 &amp; C624ADHE0 — Azya52, CC0, <a href="https://commons.wikimedia.org/wiki/File:OKI_10F5054.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li>
+        <li>Photolithography cleanroom — UCL Mathematical &amp; Physical Sciences, CC BY 2.0, <a href="https://commons.wikimedia.org/wiki/File:Cleanroom_-_photolithography_lab_(9150555216).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li>
+        <li>South Jakarta at night — Sudin Kominfomas Jakarta Selatan, public domain, <a href="https://commons.wikimedia.org/wiki/File:Jakarta_Selatan_pada_Malam_Hari.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li>
+        <li>Geothermal under the stars — Mamoxfwidayat, CC BY-SA 4.0, <a href="https://commons.wikimedia.org/wiki/File:Energi_Panas_Bumi_dan_Gugusan_Bintang.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li>
+        <li>Sterile lab door — Policarpo Brito, <a href="https://www.pexels.com/photo/scientist-entering-sterile-laboratory-room-33514502/" target="_blank" rel="noopener">Pexels</a></li>
+        <li>Pertamuda 2026 awarding night — Dok. Pertamina, via <a href="https://investortrust.id/business/121830/pertamuda-2026-tutup-kompetisi-90-startup-alumni-masih-aktif" target="_blank" rel="noopener">Investortrust</a></li>
+        <li>Factory visits in Japan — NODE pitch deck</li>
+        <li>Offshore platform — Pexels · EV charging — Pexels</li>
+        <li>Pertamina refuelling tanker — Andrew Thomas, CC BY-SA 2.0, <a href="https://commons.wikimedia.org/wiki/File:PERTAMINA_re-fueling_tanker._(8105749818).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li>
+        <li>SPBU Pertamina — Henri Aja, CC BY-SA 4.0, <a href="https://commons.wikimedia.org/wiki/File:SPBU_Pertamina_2022.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li>
+        <li>PLN kWh meter — SATELIT BM, CC BY-SA 4.0, <a href="https://commons.wikimedia.org/wiki/File:KWH_Meter_Listrik_PLN_1_Fasa_Digital_Di_Kebumen_Jateng_Indonesia.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li>
+        <li data-i18n="graded">All photos color-graded and cropped by NODE.</li>
+      </ol>
+    </details>
+    <div class="legal"><span>© 2026 NODE</span><span data-i18n="legal">Design in Indonesia · Fabricate with Japan</span></div>
+  </div>
+  <!-- the wordmark, edge to edge, sinking past the bottom of the page -->
+  <div class="bigmark" aria-hidden="true">
+    <span>N</span><svg viewBox="0 0 40 40"><defs><linearGradient id="bmg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A6290"/><stop offset=".85" stop-color="#0A1628"/></linearGradient></defs><circle cx="20" cy="20" r="14.5" fill="none" stroke="url(#bmg)" stroke-width="6"/><circle class="bm-core" cx="20" cy="20" r="5"/></svg><span>DE</span>
+  </div>
+</footer>
+
+<script>
+  // failsafe kept apart from the main script: the cold open can never trap the page
+  setTimeout(function () {
+    var i = document.getElementById("intro");
+    if (!i) return;
+    if (window.__nodeEndIntro) { window.__nodeEndIntro(); }   // also reveals the hero
+    setTimeout(function () { var j = document.getElementById("intro"); if (j) j.remove(); document.documentElement.style.overflow = ""; }, 1500);
+  }, 8000);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(() => {
+  "use strict";
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const G = window.gsap || null;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  /* ---------------- copy ---------------- */
+  const copy = {
+    en: {
+      skip: "Click to skip", skipLink: "Skip to content",
+      mqA: ["Designed in Indonesia", "RTL to GDSII", "Made in Kyushu", "Power ICs", "Smart-meter chips", "TKDN target above 50%", "Top 3 · Pertamuda 2026", "On the ground in Kyushu", "Fabless by design"],
+      mqB: ["Upstream", "Refining", "Distribution", "Fuel stations", "EV charging", "Smart grid", "Geothermal", "Solar"],
+      meterK: "Since you opened this page, Indonesia has imported", meterK2: "worth of chips.",
+      meterNote: "At 2025's pace of $4.87B a year.",
+      navCta: "Partner with us",
+      heroTitle: "Indonesia's chips come from abroad. <span class=\"dim\">We're here to change that.</span>",
+      heroLede: "NODE designs chips for Indonesia's energy sector, right here at home, to be built with foundry partners in Japan.",
+      heroCta: "See how it works", heroCta2: "Partner with us",
+      metaDesign: "Design · Indonesia", metaFab: "Fabrication · Kyushu", scroll: "Scroll",
+      gapTitle: "Almost every chip we use is shipped in. <span class=\"dim\">By 2030, the bill triples.</span>",
+      unitB: "B", c1: "$2.33B", c2: "$4.87B", c3: "$7.07B",
+      gapCap: "a year in chip imports by 2030. It was $2.33B in 2020.",
+      proj: "2030 · proj.",
+      gapNote: "Nearly every advanced chip is imported. The 2021–23 shortage showed what that costs.",
+      waveTitle: "2030 runs on silicon. <span class=\"dim\">Lots of it.</span>",
+      waveLine: "By 2030, Indonesia plans to build <span class=\"wn\" data-count=\"600\" data-suffix=\"K\">600K</span> electric cars a year, <span class=\"wn\" data-count=\"9\" data-suffix=\"M\">9M</span> electric motorbikes a year, <span class=\"wn\" data-count=\"10\" data-suffix=\"M\">10M</span> smart meters on PLN's grid, and <span class=\"wn\" data-count=\"44\" data-suffix=\"%\">44%</span> of its power from renewables.",
+      sfxK: "K", sfxM: "M",
+      t1: "electric cars a year", t2: "electric motorbikes a year", t3: "smart meters on PLN's grid", t4: "of grid power from renewables",
+      waveNote: "2030 targets from the government and PLN. Each one needs power chips and sensors.",
+      choiceTitle: "We skip the fab. <span class=\"dim\">We keep the design.</span>",
+      ratio: "200–1000×", ratioCap: "less capital to get started",
+      barFab: "Build a fab", barFabV: "USD 10–20B", barFabless: "Go fabless, like NODE", barFablessV: "USD 20–50M",
+      choiceLine: "The same chips, for a sliver of the capital. And the talent stays home.",
+      scaleNote: "Bars drawn to scale.",
+      howTitle: "Designed in Indonesia. <span class=\"dim\">Made in Kyushu.</span>",
+      j1place: "Indonesia", j1t: "It starts here.",
+      j1: "Our engineers write the logic and draw every layer of the chip. The design, and the IP, stay ours.",
+      hop1: "km north, Jakarta to Oita. The design travels as a file.",
+      j2place: "Kyushu", j2t: "Printed in Japan.",
+      j2: "Foundry partners in one of Japan's chip hubs turn our layout into silicon, then package and test every chip.",
+      hop2: "km back. This time, as chips.",
+      j3place: "Back home", j3t: "And straight to work.",
+      j3: "Chips go to Indonesian manufacturers. Or we license the design and earn on every unit.",
+      whereTitle: "Made for the energy that moves Indonesia.",
+      chipCap: "Sensor &amp; power chips",
+      u1: "Sensor chips", u2: "Edge-computing ICs", u3: "Monitoring chips", u4: "Tank gauging chips", u5: "Power semiconductors", u6: "Smart meter chips",
+      n1t: "Upstream", n1: "Sensors that catch wear on rigs and pipelines early.",
+      n2t: "Refining", n2: "Chips that read temperature and pressure in real time.",
+      n3t: "Distribution", n3: "Fuel level and flow, tracked across tanks, trucks and ships.",
+      n4t: "Fuel stations", n4: "Automatic tank gauging and early leak alerts.",
+      n5t: "EV charging", n5: "Power chips for chargers and battery systems.",
+      n6t: "Grid &amp; renewables", n6: "Smart meters, plus monitoring for geothermal and solar.",
+      roadTitle: "From idea to silicon. <span class=\"dim\">In 36 months.</span>",
+      s1t: "Research", s1: "Pitch to industry and build the thesis.",
+      s2t: "Design", s2: "Lock the spec, sign a foundry, get tape-out ready.",
+      s3t: "Pilot", s3: "First 100–500 prototypes and one energy pilot.",
+      s4t: "Scale", s4: "Three product lines, five clients, one new market.",
+      manTitle: "Design in <span class=\"hot\">Indonesia.</span>",
+      manLede: "The value is in the design. We're claiming it. Energy first, then the region.",
+      manCta: "Build it with us",
+      trTitle: "We've already walked Japan's chip factories. <span class=\"dim\">And we keep going back.</span>",
+      trLede: "Field research on the factory floor, not from a desk. Three of the companies we've met:",
+      v1: "Hiji · IP and co-development", v2: "Oita · foundry", v3: "Hiji · assembly and testing",
+      askTitle: "Top 3 at Pertamuda 2026. <span class=\"dim\">And we're just getting started.</span>",
+      askLede: "We pitched one idea: Indonesia should design its own chips.",
+      eventCap: "Final and awarding night, The Patra Bali, 5 November 2026. Photo: Pertamina.",
+      p1: "Energy Founder · Energy Optimization, Pertamuda 2026",
+      p2n: "4,445", p2: "applicants from 766 universities",
+      p3: "Japanese chipmakers met in person, from IP to final testing",
+      r1: "Founder · Strategy &amp; Partnerships", r2: "Co-founder · Business Development &amp; Market Research",
+      footAbout: "A fabless chip company, built to end Indonesia's dependence on imported energy chips.",
+      credits: "Photo credits", graded: "All photos color-graded and cropped by NODE.",
+      legal: "Design in Indonesia · Made with Japan · Top 3, Pertamuda 2026"
+    },
+    id: {
+      skip: "Klik untuk lewati", skipLink: "Langsung ke konten",
+      mqA: ["Dirancang di Indonesia", "RTL ke GDSII", "Dibuat di Kyushu", "IC daya", "Chip smart meter", "Target TKDN di atas 50%", "Top 3 · Pertamuda 2026", "Turun langsung ke Kyushu", "Fabless sejak awal"],
+      mqB: ["Hulu", "Kilang", "Distribusi", "SPBU", "Pengisian EV", "Smart grid", "Panas bumi", "Surya"],
+      meterK: "Sejak kamu membuka halaman ini, Indonesia sudah mengimpor chip senilai", meterK2: "",
+      meterNote: "Dihitung dari laju impor 2025, $4,87 miliar per tahun.",
+      navCta: "Bermitra",
+      heroTitle: "Chip kita masih impor. <span class=\"dim\">Kami datang untuk mengubahnya.</span>",
+      heroLede: "NODE merancang chip untuk sektor energi Indonesia, di sini, di rumah sendiri, untuk dibuat bersama mitra foundry di Jepang.",
+      heroCta: "Lihat caranya", heroCta2: "Bermitra dengan kami",
+      metaDesign: "Desain · Indonesia", metaFab: "Fabrikasi · Kyushu", scroll: "Gulir",
+      gapTitle: "Hampir semua chip yang kita pakai datang dari luar. <span class=\"dim\">Pada 2030, tagihannya naik tiga kali lipat.</span>",
+      unitB: "M", c1: "$2,33 M", c2: "$4,87 M", c3: "$7,07 M",
+      gapCap: "per tahun untuk impor chip pada 2030. Tahun 2020 masih $2,33 miliar.",
+      proj: "2030 · proyeksi",
+      gapNote: "Hampir semua chip canggih masih impor. Krisis chip 2021 sampai 2023 sudah menunjukkan risikonya.",
+      waveTitle: "2030 butuh silikon. <span class=\"dim\">Banyak sekali.</span>",
+      waveLine: "Pada 2030, Indonesia menargetkan produksi <span class=\"wn\" data-count=\"600\" data-suffix=\"K\">600 rb</span> mobil listrik per tahun, <span class=\"wn\" data-count=\"9\" data-suffix=\"M\">9 jt</span> motor listrik per tahun, <span class=\"wn\" data-count=\"10\" data-suffix=\"M\">10 jt</span> smart meter di jaringan PLN, dan <span class=\"wn\" data-count=\"44\" data-suffix=\"%\">44%</span> listrik dari energi terbarukan.",
+      sfxK: " rb", sfxM: " jt",
+      t1: "mobil listrik per tahun", t2: "motor listrik per tahun", t3: "smart meter di jaringan PLN", t4: "listrik dari energi terbarukan",
+      waveNote: "Target pemerintah dan PLN untuk 2030. Semuanya butuh chip daya dan sensor.",
+      choiceTitle: "Tanpa pabrik sendiri. <span class=\"dim\">Desainnya tetap milik kita.</span>",
+      ratio: "200-1000×", ratioCap: "lebih hemat modal untuk mulai",
+      barFab: "Bangun pabrik sendiri", barFabV: "USD 10-20 miliar", barFabless: "Jalur fabless, seperti NODE", barFablessV: "USD 20-50 juta",
+      choiceLine: "Chipnya sama, modalnya jauh lebih kecil. Talentanya tetap di sini.",
+      scaleNote: "Panjang bar sesuai skala.",
+      howTitle: "Dirancang di Indonesia. <span class=\"dim\">Dibuat di Kyushu.</span>",
+      j1place: "Indonesia", j1t: "Semuanya dimulai di sini.",
+      j1: "Engineer kami menulis logikanya dan menggambar setiap lapisan chip. Desain dan IP-nya tetap milik kita.",
+      hop1: "km ke utara, Jakarta ke Oita. Desainnya berangkat sebagai file.",
+      j2place: "Kyushu", j2t: "Dicetak di Jepang.",
+      j2: "Mitra foundry di salah satu pusat chip Jepang mencetak desain kami ke silikon, lalu mengemas dan menguji setiap chip.",
+      hop2: "km pulang. Kali ini sudah jadi chip.",
+      j3place: "Kembali", j3t: "Dan langsung bekerja.",
+      j3: "Chip dikirim ke produsen dalam negeri. Atau desainnya kami lisensikan, dan setiap unit menghasilkan.",
+      whereTitle: "Untuk energi yang menggerakkan Indonesia.",
+      chipCap: "Chip sensor &amp; daya",
+      u1: "Chip sensor", u2: "IC edge computing", u3: "Chip pemantau", u4: "Chip pengukur tangki", u5: "Semikonduktor daya", u6: "Chip smart meter",
+      n1t: "Hulu", n1: "Sensor yang mendeteksi aus di rig dan pipa lebih awal.",
+      n2t: "Kilang", n2: "Chip yang membaca suhu dan tekanan secara real-time.",
+      n3t: "Distribusi", n3: "Level dan aliran BBM terpantau di tangki, truk, dan kapal.",
+      n4t: "SPBU", n4: "Pengukur tangki otomatis dan peringatan dini kebocoran.",
+      n5t: "Pengisian EV", n5: "Chip daya untuk charger dan sistem baterai.",
+      n6t: "Grid &amp; EBT", n6: "Smart meter, plus pemantauan panas bumi dan surya.",
+      roadTitle: "Dari ide ke silikon. <span class=\"dim\">Dalam 36 bulan.</span>",
+      s1t: "Riset", s1: "Presentasi ke industri dan bangun tesisnya.",
+      s2t: "Desain", s2: "Kunci spesifikasi, gandeng foundry, siap tape-out.",
+      s3t: "Pilot", s3: "100 sampai 500 prototipe pertama dan satu pilot energi.",
+      s4t: "Skala", s4: "Tiga lini produk, lima klien, satu pasar baru.",
+      manTitle: "Rancang di <span class=\"hot\">Indonesia.</span>",
+      manLede: "Nilainya ada di desain. Bagian itu yang kami ambil. Energi dulu, lalu Asia Tenggara.",
+      manCta: "Bangun bersama kami",
+      trTitle: "Kami sudah turun langsung ke pabrik chip Jepang. <span class=\"dim\">Dan kami terus kembali.</span>",
+      trLede: "Riset lapangan langsung di lantai pabrik, bukan dari balik meja. Tiga perusahaan yang sudah kami temui:",
+      v1: "Hiji · IP dan pengembangan bersama", v2: "Oita · foundry", v3: "Hiji · perakitan dan pengujian",
+      askTitle: "Top 3 Pertamuda 2026. <span class=\"dim\">Dan ini baru permulaan.</span>",
+      askLede: "Kami membawa satu gagasan: Indonesia harus merancang chip sendiri.",
+      eventCap: "Malam final dan penghargaan, The Patra Bali, 5 November 2026. Foto: Dok. Pertamina.",
+      p1: "Energy Founder · Energy Optimization, Pertamuda 2026",
+      p2n: "4.445", p2: "pendaftar dari 766 kampus",
+      p3: "produsen chip Jepang sudah kami temui langsung, dari IP sampai pengujian akhir",
+      r1: "Founder · Strategi &amp; Kemitraan", r2: "Co-founder · Pengembangan Bisnis &amp; Riset Pasar",
+      footAbout: "Perusahaan chip fabless yang dibangun untuk mengakhiri ketergantungan Indonesia pada chip energi impor.",
+      credits: "Kredit foto", graded: "Semua foto diberi color grading dan dipotong oleh NODE.",
+      legal: "Rancang di Indonesia · Dibuat bersama Jepang · Top 3 Pertamuda 2026"
+    }
+  };
+  const fmtInt = n => n.toLocaleString(lang === "id" ? "id-ID" : "en-US");
+  const fmtMoney = v => "$" + (lang === "id" ? v.toFixed(2).replace(".", ",") : v.toFixed(2));
+
+  const sfx = k => (copy[lang]["sfx" + k] ?? k);
+
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+
+  // ?lang=id in the URL wins, so a link can be shared in either language
+  const qLang = new URLSearchParams(location.search).get("lang");
+  let lang = (qLang === "id" || qLang === "en") ? qLang
+    : store.get("node-lang") || ((navigator.language || "en").toLowerCase().startsWith("id") ? "id" : "en");
+  addEventListener("load", () => setTimeout(() => document.documentElement.classList.add("ready"), 50));
+
+  function applyLang(l, initial) {
+    lang = l;
+    document.documentElement.lang = l;
+    const dict = copy[l];
+    $$("[data-i18n]").forEach(el => {
+      const v = dict[el.dataset.i18n];
+      if (v == null) return;
+      el.innerHTML = v;
+      if (!initial && el.hasAttribute("data-split")) el.dataset.done = "1";
+    });
+    // tickers: one set is the items twice, the track holds two sets so -50% loops seamlessly
+    const mark = '<svg viewBox="0 0 40 40" aria-hidden="true"><circle class="r" cx="20" cy="20" r="14.5"/><circle class="c" cx="20" cy="20" r="5"/></svg>';
+    $$("[data-mq]").forEach(mq => {
+      const items = dict[mq.dataset.mq] || [];
+      const set = items.concat(items).map(t => `<span class="mq-item">${t}${mark}</span>`).join("");
+      $(".mq-track", mq).innerHTML = set + set;
+      mq.setAttribute("aria-hidden", "true");
+    });
+    $$(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
+    const c7 = $("#ctr"); if (c7) c7.textContent = fmtMoney(7.07);
+    $$("[data-count]").forEach(n => { n.textContent = n.dataset.count + sfx(n.dataset.suffix); });
+    $$("[data-km]").forEach(n => { n.textContent = fmtInt(+n.dataset.km); });
+    store.set("node-lang", l);
+    if (!initial) {
+      requestAnimationFrame(drawNet);
+      // a quick cross-fade so the switch feels deliberate
+      if (G && !reduce) G.fromTo($$("main h1, main h2"), { opacity: .2, y: 6 }, { opacity: 1, y: 0, duration: .45, stagger: .015, ease: "power2.out" });
+    }
+  }
+  $$(".lang button").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.lang)));
+  applyLang(lang, true);
+
+  /* ---------------- split headings into masked words ---------------- */
+  function split(el) {
+    const walk = node => {
+      [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(part => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            const w = document.createElement("span"); w.className = "w";
+            const i = document.createElement("span"); i.textContent = part;
+            w.appendChild(i); frag.appendChild(w);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1) walk(n);
+      });
+    };
+    walk(el);
+    return $$(".w > span", el);
+  }
+
+  /* ---------------- nav state ---------------- */
+  const nav = $("#nav");
+  const onScroll = () => nav.classList.toggle("solid", scrollY > 40);
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  /* ---------------- hero circuit canvas ---------------- */
+  const cv = $("#traces"), ctx = cv.getContext("2d");
+  let W = 0, H = 0, DPR = 1, traces = [], pulses = [], staticLayer = null, heroVisible = true, raf = 0;
+
+  function buildTraces() {
+    DPR = Math.min(devicePixelRatio || 1, 2);
+    const r = cv.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height);
+    cv.width = Math.max(1, Math.round(W * DPR)); cv.height = Math.max(1, Math.round(H * DPR));
+    const cell = W < 600 ? 22 : 30;
+    const cols = Math.ceil(W / cell), rows = Math.ceil(H / cell);
+    const n = Math.round((cols * rows) / (W < 600 ? 40 : 55));
+    traces = [];
+    for (let k = 0; k < n; k++) {
+      // bias starts to the right half so the headline stays clean
+      let x = Math.floor((0.35 + Math.random() * 0.7) * cols), y = Math.floor(Math.random() * rows);
+      const pts = [[x * cell, y * cell]];
+      let dir = Math.random() < .5 ? [1, 0] : [0, 1];
+      if (Math.random() < .5) dir = dir.map(v => -v);
+      const segs = 2 + Math.floor(Math.random() * 4);
+      for (let s = 0; s < segs; s++) {
+        const len = 2 + Math.floor(Math.random() * 7);
+        if (Math.random() < .3) { const d = [Math.sign(dir[0] || (Math.random() - .5)), Math.sign(dir[1] || (Math.random() - .5))]; x += d[0] * 2; y += d[1] * 2; }
+        else { x += dir[0] * len; y += dir[1] * len; }
+        pts.push([x * cell, y * cell]);
+        dir = dir[0] !== 0 ? [0, Math.random() < .5 ? 1 : -1] : [Math.random() < .5 ? 1 : -1, 0];
+      }
+      let L = 0; const seg = [];
+      for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(d); L += d; }
+      traces.push({ pts, seg, L });
+    }
+    // static layer
+    staticLayer = document.createElement("canvas"); staticLayer.width = cv.width; staticLayer.height = cv.height;
+    const s = staticLayer.getContext("2d"); s.scale(DPR, DPR);
+    s.lineWidth = 1; s.strokeStyle = "rgba(199,208,217,.10)"; s.fillStyle = "rgba(199,208,217,.22)";
+    traces.forEach(t => {
+      s.beginPath(); t.pts.forEach((p, i) => i ? s.lineTo(p[0], p[1]) : s.moveTo(p[0], p[1])); s.stroke();
+      const e = t.pts[t.pts.length - 1]; s.beginPath(); s.arc(e[0], e[1], 2.2, 0, 7); s.fill();
+      const b = t.pts[0]; s.strokeRect(b[0] - 2.5, b[1] - 2.5, 5, 5);
+    });
+    // fade the left side where the copy sits
+    s.globalCompositeOperation = "destination-in";
+    const g = s.createLinearGradient(0, 0, W, 0);
+    g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(.38, "rgba(0,0,0,.25)"); g.addColorStop(.7, "rgba(0,0,0,1)");
+    s.fillStyle = g; s.fillRect(0, 0, W, H);
+    pulses = traces.map(() => ({ t: Math.random(), v: .0016 + Math.random() * .0034, hot: Math.random() < .12 }));
+  }
+
+  function pointAt(t, d) {
+    let acc = 0;
+    for (let i = 0; i < t.seg.length; i++) {
+      if (acc + t.seg[i] >= d) { const f = (d - acc) / t.seg[i]; const a = t.pts[i], b = t.pts[i + 1]; return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f]; }
+      acc += t.seg[i];
+    }
+    return t.pts[t.pts.length - 1];
+  }
+
+  // cursor spotlight: traces near the pointer brighten
+  let spot = null;
+  if (fine && !reduce) {
+    const heroEl = $(".hero");
+    heroEl.addEventListener("pointermove", e => { const r = cv.getBoundingClientRect(); spot = { x: e.clientX - r.left, y: e.clientY - r.top }; }, { passive: true });
+    heroEl.addEventListener("pointerleave", () => { spot = null; });
+  }
+
+  function frame() {
+    if (!staticLayer || !staticLayer.width || !staticLayer.height) return;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.drawImage(staticLayer, 0, 0);
+    if (spot) {
+      ctx.save();
+      ctx.beginPath(); ctx.arc(spot.x * DPR, spot.y * DPR, 230 * DPR, 0, 7); ctx.clip();
+      ctx.globalCompositeOperation = "lighter";
+      ctx.drawImage(staticLayer, 0, 0); ctx.drawImage(staticLayer, 0, 0); ctx.drawImage(staticLayer, 0, 0);
+      ctx.restore();
+    }
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.globalCompositeOperation = "lighter";
+    traces.forEach((tr, i) => {
+      const p = pulses[i]; p.t += p.v; if (p.t > 1.25) { p.t = -.25; p.hot = Math.random() < .12; }
+      const head = p.t * tr.L; if (head < 0 || head - 70 > tr.L) return;
+      const fade = Math.min(1, (pointAt(tr, 0)[0] / W - .3) * 2.2);
+      if (fade <= 0) return;
+      const col = "214,222,232";
+      for (let k = 0; k < 10; k++) {
+        const d = head - k * 7; if (d < 0 || d > tr.L) continue;
+        const [x, y] = pointAt(tr, d);
+        ctx.fillStyle = `rgba(${col},${(1 - k / 10) * .55 * fade})`;
+        ctx.fillRect(x - .75, y - .75, 1.5, 1.5);
+      }
+    });
+    ctx.globalCompositeOperation = "source-over";
+    if (heroVisible && !reduce) raf = requestAnimationFrame(frame);
+  }
+  // the canvas is decoration: if it ever fails, the rest of the page must keep running
+  function startCanvas() { cancelAnimationFrame(raf); try { buildTraces(); frame(); } catch (e) { cancelAnimationFrame(raf); } }
+  startCanvas();
+  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { startCanvas(); drawNet(); }, 180); });
+  new IntersectionObserver(([e]) => {
+    heroVisible = e.isIntersecting;
+    if (!heroVisible) return;
+    if (W <= 1 || H <= 1) { startCanvas(); return; }   // first build happened while hidden
+    if (!reduce) { cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); }
+  }).observe($(".hero"));
+
+  /* ---------------- network lines (desktop) ---------------- */
+  // die floorplan: six IP blocks stacked in the right column, one per market (normalised 0..1)
+  // wide die floorplan: SRAM, logo and logic on top; six IP blocks in a row along the bottom (normalised 0..1)
+  const IP = { x0: .045, x1: .955, y0: .58, y1: .84, gap: .014 };
+  function ipBlock(z) { const w = (IP.x1 - IP.x0) / 6; return { x: IP.x0 + z * w + IP.gap / 2, y: IP.y0, w: w - IP.gap, h: IP.y1 - IP.y0 }; }
+  function zoneAnchor(z) { const b = ipBlock(z); return [b.x + .008, 1]; }   // pad near the block's left edge, above its column's text
+
+  function drawNet() {
+    const net = $("#net"), svg = $("#netSvg"), chip = $("#chip");
+    if (!net || !svg || !chip || getComputedStyle(svg).display === "none") return;
+    // layout offsets (not getBoundingClientRect) so entrance transforms don't skew the lines
+    const cx = chip.offsetLeft, cy = chip.offsetTop, cw = chip.offsetWidth, ch = chip.offsetHeight;
+    svg.setAttribute("viewBox", `0 0 ${net.offsetWidth} ${net.offsetHeight}`);
+    const nodes = $$("[data-node]"), n = nodes.length;
+    const lit = nodes.map(el => el.classList.contains("on"));
+    let html = "";
+    nodes.forEach((el, i) => {
+      // each trace drops from its block's bond pad straight down to the column below it
+      // offsets are summed up to the .net container (the pin list is itself positioned)
+      let bx = 0, by = 0;
+      for (let o = el; o && o !== net; o = o.offsetParent) { bx += o.offsetLeft; by += o.offsetTop; }
+      const [ax] = zoneAnchor(i);
+      const px = cx + cw * ax, py = cy + ch;
+      const tx = px, top = by - 2, bend = py + (top - py) * .5;   // straight drop into the column below
+      const d = Math.abs(px - tx) < 2 ? `M${px} ${py} V${top}` : `M${px} ${py} V${bend} H${tx} V${top}`;
+      html += `<path d="${d}"/><path class="${lit[i] ? "live" : ""}" data-l="${i}" d="${d}"/>`;
+    });
+    svg.innerHTML = html;
+  }
+  addEventListener("load", drawNet);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawNet);
+
+  /* ---------------- live import meter: dollars of chips imported since page open ---------------- */
+  const meterEl = $("#meter");
+  if (meterEl) {
+    const t0 = performance.now(), RATE = 4.87e9 / (365 * 24 * 3600);   // 2025 imports, USD per second
+    let meterOn = false;
+    new IntersectionObserver(([e]) => { meterOn = e.isIntersecting; }).observe(meterEl);
+    const upd = () => { if (meterOn) meterEl.textContent = "$" + fmtInt(Math.floor((performance.now() - t0) / 1000 * RATE)); };
+    setInterval(upd, reduce ? 1000 : 60); upd();
+  }
+
+  /* ---------------- wafer-sort map: a probe tests dies one by one, forever ---------------- */
+  const wc = $("#wafer");
+  if (wc) {
+    const wx = wc.getContext("2d");
+    let dies = [], fails = new Set(), probe = 0, hold = 0, wOn = false, WS = 0, wd = 1, last = 0;
+    function buildWafer() {
+      wd = Math.min(devicePixelRatio || 1, 2);
+      WS = Math.max(1, wc.getBoundingClientRect().width);
+      wc.width = wc.height = Math.round(WS * wd);
+      const N = 22, R = WS / 2 * .96, s = (R * 2) / N, c = WS / 2;
+      dies = [];
+      for (let j = 0; j < N; j++) {
+        const row = [];
+        for (let i = 0; i < N; i++) {
+          const x = c - R + i * s, y = c - R + j * s;
+          const inside = [[x, y], [x + s, y], [x, y + s], [x + s, y + s]].every(([px, py]) => Math.hypot(px - c, py - c) <= R * .97);
+          if (inside) row.push({ x, y, s });
+        }
+        if (j % 2) row.reverse();          // serpentine, like a real prober
+        dies.push(...row);
+      }
+      reseed();
+    }
+    function reseed() { fails = new Set(); dies.forEach((d, k) => { if (Math.random() < .05) fails.add(k); }); probe = 0; hold = 0; }
+    function drawWafer(all) {
+      const c = WS / 2, R = WS / 2 * .96;
+      wx.setTransform(wd, 0, 0, wd, 0, 0);
+      wx.clearRect(0, 0, WS, WS);
+      wx.lineWidth = 1.2; wx.strokeStyle = "rgba(58,83,123,.55)";
+      wx.beginPath(); wx.arc(c, c, R, .53 * Math.PI, 2.47 * Math.PI); wx.lineTo(c, c + R - 10); wx.closePath(); wx.stroke();   // notch
+      const done = all ? dies.length : probe;
+      dies.forEach((d, k) => {
+        const g = 1.2;
+        if (k < done) {
+          wx.fillStyle = fails.has(k) ? "#F5E734" : "rgba(58,83,123,.26)";
+          wx.fillRect(d.x + g, d.y + g, d.s - g * 2, d.s - g * 2);
+        } else {
+          wx.strokeStyle = "rgba(58,83,123,.18)"; wx.strokeRect(d.x + g, d.y + g, d.s - g * 2, d.s - g * 2);
+        }
+      });
+      if (!all && probe < dies.length) {
+        const d = dies[Math.floor(probe)];
+        wx.strokeStyle = "rgba(10,22,40,.25)"; wx.lineWidth = 1;
+        wx.beginPath(); wx.moveTo(0, d.y + d.s / 2); wx.lineTo(WS, d.y + d.s / 2); wx.moveTo(d.x + d.s / 2, 0); wx.lineTo(d.x + d.s / 2, WS); wx.stroke();
+        wx.fillStyle = "#0A1628"; wx.fillRect(d.x + 1, d.y + 1, d.s - 2, d.s - 2);
+      }
+    }
+    function waferLoop(ts) {
+      if (wOn) {
+        const dt = Math.min(100, ts - (last || ts)); last = ts;
+        if (probe < dies.length) probe = Math.min(dies.length, probe + dt * .03);   // ~30 dies a second
+        else if ((hold += dt) > 1400) reseed();
+        drawWafer(false);
+      } else last = 0;
+      requestAnimationFrame(waferLoop);
+    }
+    try {
+      buildWafer();
+      if (reduce) drawWafer(true);
+      else {
+        new IntersectionObserver(([e]) => { wOn = e.isIntersecting; }).observe(wc);
+        requestAnimationFrame(waferLoop);
+      }
+      addEventListener("resize", () => { buildWafer(); if (reduce) drawWafer(true); });
+    } catch (e) {}
+  }
+
+  /* ---------------- die layout: a wide top view of the NODE die, the way it looks under a microscope ---------------- */
+  // Seal ring and pad ring, an SRAM macro, a logo window, rows of standard cells (the transistors),
+  // metal routing, and six IP blocks along the bottom that light up as their market comes online.
+  const wn = $("#wnode");
+  if (wn) {
+    const wctx = wn.getContext("2d");
+    let W = 0, H = 0, wdpr = 1, wnOn = false, layout = null;
+    const rnd = (() => { let s = 20260905; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); })();
+    const LOGIC = { x0: .53, x1: .955, y0: .12, y1: .52 };
+    const SRAM = { x0: .045, x1: .30, y0: .12, y1: .52 };
+    const LOGO = { x0: .315, x1: .515, y0: .12, y1: .52 };
+    function buildWnode() {
+      wdpr = Math.min(devicePixelRatio || 1, 2);
+      const r = wn.getBoundingClientRect();
+      W = Math.max(1, r.width); H = Math.max(1, r.height);
+      wn.width = Math.round(W * wdpr); wn.height = Math.round(H * wdpr);
+      if (layout) return;                                          // geometry is normalised; build once
+      const cells = [], rails = [], vias = [], m2 = [];
+      const rowH = .05;
+      for (let y = LOGIC.y0; y < LOGIC.y1 - .02; y += rowH) {
+        rails.push(y);
+        let x = LOGIC.x0;
+        while (x < LOGIC.x1 - .004) {
+          const w = .003 + rnd() * .014;
+          if (rnd() > .1) cells.push([x, y + .008, Math.min(w, LOGIC.x1 - x), rowH - .016]);
+          x += w + .0016;
+        }
+      }
+      for (let i = 0; i < 22; i++) m2.push(LOGIC.x0 + .005 + rnd() * (LOGIC.x1 - LOGIC.x0 - .01));
+      for (let i = 0; i < 90; i++) vias.push([LOGIC.x0 + rnd() * (LOGIC.x1 - LOGIC.x0), LOGIC.y0 + rnd() * (LOGIC.y1 - LOGIC.y0)]);
+      layout = { cells, rails, m2, vias };
+    }
+    function drawWnode(t) {
+      const X = v => v * W, Y = v => v * H, c = wctx;
+      const lit = $$("[data-node]").map(el => el.classList.contains("on"));
+      c.setTransform(wdpr, 0, 0, wdpr, 0, 0);
+      c.clearRect(0, 0, W, H);
+      // die + seal ring
+      c.fillStyle = "#0E1B33"; c.fillRect(0, 0, W, H);
+      c.lineWidth = 1;
+      c.strokeStyle = "rgba(199,208,217,.42)"; c.strokeRect(.5, .5, W - 1, H - 1);
+      c.strokeStyle = "rgba(199,208,217,.16)"; c.strokeRect(6.5, 6.5, W - 13, H - 13);
+      // pad ring: top edge and both sides
+      const ps = Math.max(5, Math.min(W, H) * .04);
+      c.fillStyle = "rgba(199,208,217,.3)";
+      const topPads = Math.round(W / (ps * 2.6));
+      for (let i = 0; i < topPads; i++) c.fillRect(X(.03) + i * ((X(.94) - ps) / (topPads - 1)), 14, ps, ps);
+      const sidePads = Math.max(3, Math.round(H / (ps * 2.8)));
+      for (let i = 0; i < sidePads; i++) {
+        const y = Y(.12) + i * ((Y(.72) - ps) / (sidePads - 1));
+        c.fillRect(14, y, ps * .7, ps); c.fillRect(W - 14 - ps * .7, y, ps * .7, ps);
+      }
+      // SRAM macro: dense bit-cell array with a decoder strip
+      c.fillStyle = "rgba(199,208,217,.05)"; c.fillRect(X(SRAM.x0), Y(SRAM.y0), X(SRAM.x1 - SRAM.x0), Y(SRAM.y1 - SRAM.y0));
+      c.strokeStyle = "rgba(199,208,217,.3)"; c.strokeRect(X(SRAM.x0) + .5, Y(SRAM.y0) + .5, X(SRAM.x1 - SRAM.x0), Y(SRAM.y1 - SRAM.y0));
+      c.fillStyle = "rgba(199,208,217,.14)"; c.fillRect(X(SRAM.x0) + 4, Y(SRAM.y0) + 4, X(.022), Y(SRAM.y1 - SRAM.y0) - 8);
+      c.fillStyle = "rgba(199,208,217,.2)";
+      const bit = Math.max(2.5, Math.min(W, H) * .022);
+      for (let y = Y(SRAM.y0) + 5; y < Y(SRAM.y1) - 4; y += bit) for (let x = X(SRAM.x0 + .03); x < X(SRAM.x1) - 4; x += bit) c.fillRect(x, y, bit - 1, bit - 1);
+      // logo window (the wordmark sits here as HTML)
+      c.strokeStyle = "rgba(199,208,217,.14)"; c.strokeRect(X(LOGO.x0) + .5, Y(LOGO.y0) + .5, X(LOGO.x1 - LOGO.x0), Y(LOGO.y1 - LOGO.y0));
+      // standard cells, power rails, metal-2, vias
+      const L = layout;
+      c.fillStyle = "rgba(199,208,217,.16)";
+      L.cells.forEach(([x, y, w, h]) => c.fillRect(X(x), Y(y), Math.max(1, X(w)), Y(h)));
+      c.fillStyle = "rgba(199,208,217,.32)";
+      L.rails.forEach(y => c.fillRect(X(LOGIC.x0), Y(y), X(LOGIC.x1 - LOGIC.x0), 1));
+      c.fillStyle = "rgba(43,59,255,.3)";
+      L.m2.forEach(x => c.fillRect(X(x), Y(LOGIC.y0), 1, Y(LOGIC.y1 - LOGIC.y0)));
+      c.fillStyle = "rgba(199,208,217,.45)";
+      L.vias.forEach(([x, y]) => c.fillRect(X(x), Y(y), 2, 2));
+      // global routing channel between the top half and the IP row
+      c.fillStyle = "rgba(199,208,217,.12)";
+      for (let k = 0; k < 4; k++) c.fillRect(X(.045), Y(.54) + k * 3, X(.91), 1);
+      // six IP blocks with transistor fingers, each wired to a bond pad on the bottom edge
+      for (let z = 0; z < 6; z++) {
+        const b = ipBlock(z), on = lit[z];
+        const bx = X(b.x), by = Y(b.y), bw = X(b.w), bh = Y(b.h);
+        c.fillStyle = on ? "rgba(245,231,52,.15)" : "rgba(199,208,217,.04)"; c.fillRect(bx, by, bw, bh);
+        c.strokeStyle = on ? "rgba(245,231,52,.85)" : "rgba(199,208,217,.32)"; c.strokeRect(bx + .5, by + .5, bw - 1, bh - 1);
+        c.fillStyle = on ? "rgba(245,231,52,.55)" : "rgba(199,208,217,.18)";
+        const step = Math.max(3, bw / 22);
+        for (let x = bx + 6; x < bx + bw - 5; x += step) c.fillRect(x, by + 5, 1, bh - 10);
+        c.fillRect(bx + 6, by + bh / 2 - .5, bw - 12, 1);              // gate line across the fingers
+        const cx = X(zoneAnchor(z)[0]);
+        c.strokeStyle = on ? "rgba(245,231,52,.75)" : "rgba(199,208,217,.28)";
+        c.beginPath(); c.moveTo(cx + .5, by + bh); c.lineTo(cx + .5, H - 14 - ps); c.stroke();
+        c.fillStyle = on ? "rgba(245,231,52,.9)" : "rgba(199,208,217,.32)";
+        c.fillRect(cx - ps / 2, H - 14 - ps, ps, ps);
+      }
+      // a slow inspection sweep across the die
+      if (!reduce) {
+        const sx = ((t / 9000) % 1) * (W + 120) - 60;
+        const grad = c.createLinearGradient(sx - 60, 0, sx + 4, 0);
+        grad.addColorStop(0, "rgba(199,208,217,0)"); grad.addColorStop(1, "rgba(199,208,217,.07)");
+        c.fillStyle = grad; c.fillRect(sx - 60, 0, 64, H);
+      }
+    }
+    const wnLoop = ts => { if (wnOn) drawWnode(ts); requestAnimationFrame(wnLoop); };
+    try {
+      buildWnode(); drawWnode(0);
+      new IntersectionObserver(([e]) => { wnOn = e.isIntersecting; }).observe(wn);
+      requestAnimationFrame(wnLoop);
+      addEventListener("resize", () => { buildWnode(); drawWnode(performance.now()); });
+    } catch (e) {}
+  }
+
+  /* ---------------- Ken Burns runs only while its scene is on screen ---------------- */
+  const kbIO = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("paused", !e.isIntersecting)));
+  $$("main section").forEach(s => kbIO.observe(s));
+
+  /* ---------------- interactions ---------------- */
+
+
+  /* ---------------- depth: background parallax (time-free, never blocks scrolling) ---------------- */
+  if (!reduce) {
+    const layers = [...$$("main > section > .shot").map(el => [el, 70]), ...$$(".leg-photo .shot").map(el => [el, 40])];
+    let ticking = false;
+    const parallax = () => {
+      ticking = false;
+      const vh = innerHeight;
+      layers.forEach(([el, k]) => {
+        const r = el.parentElement.getBoundingClientRect();
+        if (r.bottom < -100 || r.top > vh + 100) return;
+        const p = (r.top + r.height / 2 - vh / 2) / vh;          // -1 … 1 across the screen
+        el.style.setProperty("--py", (p * -k).toFixed(1) + "px");
+      });
+    };
+    addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(parallax); } }, { passive: true });
+    addEventListener("resize", parallax); parallax();
+  }
+
+  // No element follows the cursor (no magnetic buttons, tilt or drifting layers): the page
+  // moves on its own and with scroll, and stays put under the pointer.
+
+  /* ---------------- no motion: show final states and stop ---------------- */
+  const intro = $("#intro");
+  if (reduce || !G) {
+    document.documentElement.classList.add("no-intro");
+    $$("[data-node]").forEach(n => n.classList.add("on"));
+    $$(".st").forEach(s => s.classList.add("on"));
+    requestAnimationFrame(drawNet);
+    return;
+  }
+
+  /* ---------------- cold open ---------------- */
+  // plays once per browser session; reloads and revisits go straight to the hero
+  const seen = (() => { try { return sessionStorage.getItem("node-intro") === "1"; } catch (e) { return false; } })();
+  const prevOverflow = document.documentElement.style.overflow;
+  // lay the wordmark out around the ring: N [O] DE, then route traces out of the ring.
+  // Waits briefly for Poppins so the measurement matches the real glyphs.
+  let tlIntro = null, ended = false;
+  // a tab opened in the background skips the cold open; timelines also follow real time,
+  // so nothing stalls half-way when the browser throttles a hidden tab
+  G.ticker.lagSmoothing(0);
+  // deep links (…/#contact) go straight to their section
+  const skipIntro = seen || document.hidden || location.hash.length > 1;
+  if (skipIntro) { ended = true; intro.remove(); }
+  else {
+    document.documentElement.style.overflow = "hidden";
+    G.set(".intro .bar.t", { yPercent: -100 }); G.set(".intro .bar.b", { yPercent: 100 });
+    G.set("#intro svg", { opacity: 0 });
+    Promise.race([
+      document.fonts ? document.fonts.load('700 120px "Poppins"') : Promise.resolve(),
+      new Promise(r => setTimeout(r, 700))
+    ]).then(buildIntro, buildIntro);
+  }
+
+  function buildIntro() {
+  if (ended) return;
+  const iN = $("#iN"), iDE = $("#iDE"), iRing = $("#iRing"), iCore = $("#iCore"), iTr = $("#introTraces");
+  const R = 36.5, OUT = R + 7.5, GAP = 7;
+  const wN = iN.getComputedTextLength(), wDE = iDE.getComputedTextLength();
+  const x0 = 300 - (wN + GAP + OUT * 2 + GAP + wDE) / 2, cx = x0 + wN + GAP + OUT, cy = 130;
+  iN.setAttribute("x", x0); iDE.setAttribute("x", cx + OUT + GAP);
+  [iRing, iCore].forEach(c => c.setAttribute("cx", cx));
+  const top = cy - OUT, bot = cy + OUT;
+  const routes = [[`M${cx} ${top} V44 H64`, 64, 44], [`M${cx} ${top} V60 H540`, 540, 60], [`M${cx} ${bot} V206 H96`, 96, 206], [`M${cx} ${bot} V222 H512`, 512, 222]];
+  iTr.innerHTML = routes.map(([d, x, y]) => `<path class="it" d="${d}"/><circle class="ip" cx="${x}" cy="${y}" r="4"/>`).join("");
+  const itPaths = $$("#introTraces .it"), itPads = $$("#introTraces .ip");
+  itPaths.forEach(p => { const L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
+  const RL = 2 * Math.PI * R; iRing.style.strokeDasharray = RL; iRing.style.strokeDashoffset = RL;
+  G.set(itPads, { scale: 0, transformOrigin: "50% 50%" });
+  G.set(iN, { opacity: 0, x: 40 }); G.set(iDE, { opacity: 0, x: -40 });
+  G.set("#introTag", { opacity: 0 });
+  G.set(iCore, { scale: 0, transformOrigin: "50% 50%" });
+  G.set(iRing, { rotation: -90, transformOrigin: "50% 50%" });
+  G.set("#intro svg", { opacity: 1 });
+
+  tlIntro = G.timeline({ defaults: { ease: "expo.out" }, onComplete: endIntro });
+  tlIntro
+    .to(".intro .bar", { yPercent: 0, duration: .55, ease: "power3.inOut" })
+    .to(iCore, { scale: 1, duration: .45, ease: "back.out(3)" }, "-=.2")
+    .to(iRing, { strokeDashoffset: 0, duration: .6, ease: "power3.inOut" }, "-=.15")
+    .to(itPaths, { strokeDashoffset: 0, duration: .7, stagger: .06, ease: "power2.inOut" }, "-=.3")
+    .to(itPads, { scale: 1, duration: .3, stagger: .05, ease: "back.out(3)" }, "-=.35")
+    .to(iN, { opacity: 1, x: 0, duration: .8 }, "-=.6")
+    .to(iDE, { opacity: 1, x: 0, duration: .8 }, "<")
+    .to("#introTag", { opacity: 1, duration: .5 }, "-=.5")
+    .to(itPaths, { opacity: .35, duration: .5 }, "-=.25")
+    .to({}, { duration: .3 });
+  }
+
+  function endIntro() {
+    if (ended) return; ended = true;
+    if (tlIntro) tlIntro.kill();
+    try { sessionStorage.setItem("node-intro", "1"); } catch (e) {}
+    G.timeline({ onComplete: () => { intro.remove(); document.documentElement.style.overflow = prevOverflow; } })
+      .to("#intro svg, .intro .skip", { opacity: 0, scale: .96, duration: .45, ease: "power2.in" })
+      .to(".intro .bar.t", { yPercent: -100, duration: .8, ease: "expo.inOut" }, "<.2")
+      .to(".intro .bar.b", { yPercent: 100, duration: .8, ease: "expo.inOut" }, "<")
+      .to(intro, { backgroundColor: "rgba(10,22,40,0)", duration: .8, ease: "power2.inOut" }, "<");
+    heroIn.play(0);
+  }
+  if (!skipIntro) {
+    ["click", "keydown", "wheel", "touchstart"].forEach(ev => intro.addEventListener(ev, endIntro, { passive: true }));
+    addEventListener("keydown", endIntro, { once: true });
+  }
+
+  /* ---------------- scene timelines (time-based, fire once on enter) ---------------- */
+  const prepWords = el => { const w = split(el); G.set(w, { yPercent: 110 }); return w; };
+  const prepFade = els => { G.set(els, { opacity: 0, y: 28 }); return els; };
+
+  // Scenes register in page order. When one fires, any earlier scene that was skipped
+  // (anchor jump, fast drag) is finished instantly so nothing is left hidden above.
+  const scenes = [];
+  function scene(el, tl, before) {
+    const rec = { el, tl, played: false };
+    scenes.push(rec);
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        scenes.forEach(s => { if (s !== rec && !s.played && scenes.indexOf(s) < scenes.indexOf(rec)) { s.played = true; s.tl.progress(1); } });
+        if (rec.played) return;
+        rec.played = true;
+        if (before) before();
+        tl.play();
+      });
+    }, { rootMargin: "0px 0px -4% 0px" });
+    io.observe(el);
+  }
+
+  function headTimeline(section) {
+    const h = $("[data-split]", section), rs = $$("[data-r]", section);
+    const words = h ? prepWords(h) : [];
+    prepFade(rs);
+    const tl = G.timeline({ paused: true, defaults: { ease: "expo.out" } });
+    tl.to(words, { yPercent: 0, duration: .9, stagger: .028 }, 0)
+      .to(rs, { opacity: 1, y: 0, duration: .8, stagger: .06 }, .12);
+    return tl;
+  }
+
+  // hero: the photo settles from a slow push-in (tweens the frame, not the Ken Burns img)
+  const hero = $(".hero");
+  const heroIn = headTimeline(hero);
+  heroIn.fromTo(".hero .shot", { "--z": 1.16 }, { "--z": 1, duration: 2.6, ease: "expo.out" }, 0);
+  const heroMark = $(".hero mark"); if (heroMark) { heroMark.style.setProperty("--mk", "0%"); heroIn.to(heroMark, { "--mk": "100%", duration: 1, ease: "power3.inOut" }, .9); }
+  if (skipIntro) heroIn.play(0);
+  window.__nodeEndIntro = endIntro;
+
+  // gap: counter, line draw, and a one-shot ripple on the 2030 point
+  const gap = $(".gap"), gapTl = headTimeline(gap);
+  const cLine = $("#cLine"), cL = cLine.getTotalLength();
+  cLine.style.strokeDasharray = cL; cLine.style.strokeDashoffset = cL;
+  G.set("#cArea", { opacity: 0 }); G.set(".chart .dot, .chart text.v", { opacity: 0, scale: .6, transformOrigin: "50% 50%" });
+  G.set("#cProj", { opacity: 0 }); G.set("#ripple", { attr: { r: 6 }, opacity: 0 });
+  const ctr = { v: 0 }, ctrEl = $("#ctr");
+  gapTl.to(ctr, { v: 7.07, duration: 2, ease: "power3.out", onUpdate: () => { if (ctrEl) ctrEl.textContent = fmtMoney(ctr.v); } }, .4)
+       .to(cLine, { strokeDashoffset: 0, duration: 1.1, ease: "power2.inOut" }, .6)
+       .to("#cProj", { opacity: 1, duration: .9, ease: "power2.out" }, 1.5)
+       .to("#cArea", { opacity: 1, duration: 1.2 }, 1.2)
+       .to(".chart .dot, .chart text.v", { opacity: 1, scale: 1, duration: .6, stagger: .25, ease: "back.out(2)" }, .8)
+       .fromTo("#ripple", { attr: { r: 6 }, opacity: 1 }, { attr: { r: 44 }, opacity: 0, duration: 1.1, ease: "power2.out", repeat: 1, repeatDelay: .15 }, 2.2);
+  scene(gap, gapTl);
+
+  // wave: the sentence arrives, then each number counts up inside it
+  const wave = $(".wave"), waveTl = headTimeline(wave);
+  waveTl.call(() => {
+    $$(".wave-line [data-count]").forEach((n, i) => {
+      const end = +n.dataset.count, suf = n.dataset.suffix, o = { v: 0 };
+      G.to(o, { v: end, duration: 1.3, delay: i * .12, ease: "power3.out", onUpdate: () => { n.textContent = Math.round(o.v) + sfx(suf); } });
+    });
+  }, null, .3);
+  scene(wave, waveTl);
+
+  // choice (light scene): fab bar races out, the fabless sliver pops, then the ratio slams in
+  const choice = $(".choice"), choiceTl = headTimeline(choice);
+  G.set("#fillFab", { scaleX: 0 }); G.set("#fillFabless", { scaleX: 0, opacity: 0 });
+  G.set("#ratio", { scale: 1.35, opacity: 0, transformOrigin: "0% 100%" });
+  const cMark = $(".choice mark"); if (cMark) cMark.style.setProperty("--mk", "0%");
+  choiceTl.to("#fillFab", { scaleX: 1, duration: 1.6, ease: "power3.inOut" }, .5)
+          .to("#fillFabless", { scaleX: 1, opacity: 1, duration: .45, ease: "back.out(3)" }, 1.9)
+          .to("#ratio", { scale: 1, opacity: 1, duration: .7, ease: "expo.out" }, 2.2);
+  scene(choice, choiceTl);
+
+  // how: headline first, then each leg of the trip plays as it arrives on screen
+  const how = $(".how"), howTl = headTimeline(how);
+  scene(how, howTl);
+  $$("[data-leg]").forEach((leg, i) => {
+    const photo = $(".leg-photo", leg), copyEls = $$(".leg-place, .leg-copy h3, .leg-copy > p", leg);
+    const from = ["inset(0 100% 0 0 round 8px)", "inset(0 0 0 100% round 8px)", "inset(100% 0 0 0 round 8px)"][i];
+    G.set(photo, { clipPath: from });
+    G.set($(".shot", leg), { scale: 1.12 });
+    G.set(copyEls, { opacity: 0, y: 26 });
+    const tl = G.timeline({ paused: true, defaults: { ease: "expo.out" } })
+      .to(photo, { clipPath: "inset(0 0% 0 0% round 8px)", duration: .9, ease: "expo.inOut" }, 0)
+      .to($(".shot", leg), { scale: 1, duration: 2, ease: "expo.out", clearProps: "transform" }, .2)
+      .to(copyEls, { opacity: 1, y: 0, duration: .8, stagger: .07 }, .2)
+      .call(() => G.set(photo, { clearProps: "clipPath" }));
+    scene(leg, tl);
+  });
+  $$("[data-hop]").forEach(hop => {
+    const line = $(".hop-line", hop), km = $("[data-km]", hop), o = { v: 0 }, end = +km.dataset.km;
+    G.set(line, { scaleY: 0 }); G.set($("p", hop), { opacity: 0, x: -12 });
+    const tl = G.timeline({ paused: true, defaults: { ease: "expo.out" } })
+      .to(line, { scaleY: 1, duration: 1.1, ease: "power3.inOut" }, 0)
+      .to($("p", hop), { opacity: 1, x: 0, duration: .9 }, .3)
+      .to(o, { v: end, duration: 1.4, ease: "power3.out", onUpdate: () => { km.textContent = fmtInt(Math.round(o.v)); } }, .3);
+    scene(hop, tl);
+  });
+
+  // where: chip powers on, then a pulse runs down each trace and its node lights
+  const where = $(".where"), whereTl = headTimeline(where);
+  const nodes = $$("[data-node]");
+  G.set(nodes, { opacity: 0, y: 24 }); G.set("#chip", { opacity: 0, scale: .9 });
+  whereTl.to("#chip", { opacity: 1, scale: 1, duration: 1.1 }, .3)
+         .to(nodes, { opacity: 1, y: 0, duration: .9, stagger: .1 }, .5);
+  nodes.forEach((n, i) => whereTl.call(() => {
+    n.classList.add("on");
+    const p = $(`#netSvg path[data-l="${i}"]`); if (p) p.classList.add("live");
+  }, null, 1.1 + i * .22));
+  scene(where, whereTl, drawNet);
+
+  // traction: photos open one after another
+  const traction = $(".traction"), trTl = headTimeline(traction);
+  const visits = $$("[data-visit]");
+  G.set(visits.map(v => $(".vimg", v)), { clipPath: "inset(100% 0 0 0 round 8px)" });
+  G.set(visits.map(v => $("img", v)), { scale: 1.15 });
+  G.set(visits.map(v => $("figcaption", v)), { opacity: 0, y: 14 });
+  visits.forEach((v, i) => {
+    trTl.to($(".vimg", v), { clipPath: "inset(0% 0 0 0 round 8px)", duration: .9, ease: "expo.inOut" }, .1 + i * .1)
+        .to($("img", v), { scale: 1, duration: 1.4, ease: "expo.out" }, .2 + i * .1)
+        .to($("figcaption", v), { opacity: 1, y: 0, duration: .6 }, .6 + i * .1);
+  });
+  scene(traction, trTl);
+
+  // road
+  const road = $(".road"), roadTl = headTimeline(road);
+  const sts = $$(".st");
+  G.set("#prog", { scaleY: 0 }); G.set(sts, { opacity: 0, x: -16 });
+  G.set(".road-photo", { clipPath: "inset(100% 0 0 0 round 8px)" });
+  roadTl.to(sts, { opacity: 1, x: 0, duration: .7, stagger: .08 }, .15)
+        .to("#prog", { scaleY: 1, duration: 1.1, ease: "power2.inOut" }, .25)
+        .to(".road-photo", { clipPath: "inset(0% 0 0 0 round 8px)", duration: 1.4, ease: "expo.inOut" }, .2);
+  sts.forEach((s, i) => roadTl.call(() => s.classList.add("on"), null, .3 + i * .26));
+  scene(road, roadTl);
+
+  // manifesto: the die shot irises in
+  const man = $(".manifesto"), manTl = headTimeline(man);
+  const mm = $(".manifesto mark"); if (mm) mm.style.setProperty("--mk", "0%");
+  G.set(".manifesto .shot", { scale: 1.22, opacity: 0, clipPath: "circle(18% at 70% 50%)" });
+  manTl.to(".manifesto .shot", { scale: 1, opacity: 1, clipPath: "circle(110% at 70% 50%)", duration: 2.2, ease: "expo.inOut", clearProps: "transform,clipPath" }, 0);
+  scene(man, manTl);
+
+  // Pertamuda: portraits, then the three asks land one by one
+  const ask = $(".ask"), askTl = headTimeline(ask);
+  const asks = $$("[data-ask]");
+  G.set(asks, { opacity: 0, x: 24 });
+  askTl.to(asks, { opacity: 1, x: 0, duration: .9, stagger: .14 }, .5);
+  scene(ask, askTl);
+
+  // reload mid-page: anything already above the viewport should never stay hidden
+  addEventListener("load", () => {
+    scenes.forEach(s => { if (!s.played && s.el.getBoundingClientRect().bottom < 0) { s.played = true; s.tl.progress(1); } });
+  });
+})();
+</script>
+</body>
+</html>
